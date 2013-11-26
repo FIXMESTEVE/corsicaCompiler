@@ -41,11 +41,7 @@ Syntaxe adoptée lors du projet de Compilation :
 			*i = 3;
 			i = j;
 
-
-	Expressions arithmétiques et logiques:
-		Affection   //---------------------------------WTF IS THIS SH*T------------------------
-			i : entier = 1;
-			i = 2;
+	Expressions arithmétiques, logiques:
 		Inférieur
 			x < y;
 		Inférieur ou égal
@@ -54,4 +50,32 @@ Syntaxe adoptée lors du projet de Compilation :
 			x > y;
 		Superior ou égal
 			x >= y;
+		And
+			x & y;
+		Or
+			x | y;
+			
+	Instructions:
+		Affectation
+			i : entier = 1;
+			i = 2;
 		
+		Tests
+			If
+				if(3>2)
+					//bloc
+
+		Boucles
+			For
+				i : entier;
+				max : entier = 10;
+				for(i = 0; 0 < max; i++)
+				      	//bloc
+			
+			While
+				while(i == true)
+					//bloc
+		
+		Blocs
+			{ //code }
+			
