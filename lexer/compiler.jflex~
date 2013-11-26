@@ -1,0 +1,76 @@
+import java_cup.runtime.Symbol;
+
+%%
+%class CalculetteLexer
+%line
+%column
+%cupsym CalculetteSymbol
+%cup
+
+NumberReal = "-"?[[:digit:]]+(\.[[:digit:]]+)?([Ee][+-]?[[:digit:]]+)?
+NumberComplexe = {NumberReal}"+"{NumberReal}"i"
+NumberInteger = "-"?[[:digit:]]+
+Comment   = "/*" [^*] ~"*/" | "/*" "*"+ "/"
+
+%%
+
+/* -------------------------------------------------
+        Operateurs
+   ------------------------------------------------- */
+				 ";"   { return new Symbol(CalculetteSymbol.SEMIC, yyline, yycolumn); }
+						","     {return new Symbol(CalculetteSymbol.COMA, yyline, yycolumn);}
+":=" { }
+"[" {}
+"]" {}
+"int" {} //TYPE_INTEGER
+"real" {} //TYPE_REAL
+
+/*
+"+"     { return new Symbol(CalculetteSymbol.PLUS, yyline, yycolumn); }
+"-"     { return new Symbol(CalculetteSymbol.MINUS, yyline, yycolumn); }
+"*"     { return new Symbol(CalculetteSymbol.MULT, yyline, yycolumn); }
+"/"     { return new Symbol(CalculetteSymbol.DIV, yyline, yycolumn); }
+"("     { return new Symbol(CalculetteSymbol.LPAR, yyline, yycolumn); }
+")"     { return new Symbol(CalculetteSymbol.RPAR, yyline, yycolumn); }
+*/
+
+
+/*"true"     { return new Symbol(CalculetteSymbol.BOOLEAN, yyline, yytext()); }
+"false"      { return new Symbol(CalculetteSymbol.BOOLEAN, yyline, yytext()); }
+"%"     { return new Symbol(CalculetteSymbol.MOD, yyline, yycolumn); }
+"=="    { return new Symbol(CalculetteSymbol.EQ, yyline, yycolumn); }
+"!="    { return new Symbol(CalculetteSymbol.DIFF, yyline, yycolumn); }
+"<"     { return new Symbol(CalculetteSymbol.LT, yyline, yycolumn); }
+"<="    { return new Symbol(CalculetteSymbol.LE, yyline, yycolumn); }
+">"     { return new Symbol(CalculetteSymbol.GT, yyline, yycolumn); }
+">="    { return new Symbol(CalculetteSymbol.GE, yyline, yycolumn); }
+"&&"    { return new Symbol(CalculetteSymbol.AND, yyline, yycolumn); }
+"||"    { return new Symbol(CalculetteSymbol.OR, yyline, yycolumn); }
+"!"     { return new Symbol(CalculetteSymbol.NOT, yyline, yycolumn); }
+"->"    { return new Symbol(CalculetteSymbol.IMPL, yyline, yycolumn); }	
+"<->"   { return new Symbol(CalculetteSymbol.EQUIV, yyline, yycolumn); }
+"?"     { return new Symbol(CalculetteSymbol.QUEST, yyline, yycolumn); }
+":"     { return new Symbol(CalculetteSymbol.COLON, yyline, yycolumn); }
+
+
+/* -------------------------------------------------
+        Nombres
+   ------------------------------------------------- */
+{NumberInteger}     { return new Symbol(CalculetteSymbol.INTEGER, yyline, yycolumn, new Integer(yytext())); }
+
+{NumberReal}     	{ return new Symbol(CalculetteSymbol.REAL, yyline, yycolumn, new Float(yytext())); }
+
+{NumberComplexe}    { 
+                        return new Symbol(CalculetteSymbol.COMPLEX, yyline, yycolumn, new Complex(yytext())); 
+  					}
+
+
+
+/* -------------------------------------------------
+        Commentaires - Caracteres non pris en compte
+   ------------------------------------------------- */
+{Comment} {}
+
+/* -------------------------------------------------
+   ------------------------------------------------- */
+.|\n {}

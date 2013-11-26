@@ -1,0 +1,57 @@
+
+Syntaxe adoptée lors du projet de Compilation :
+	
+	Commentaire : 
+			// Ceci est un commentaire \n
+			/* Ceci est un commentaire */
+
+	Déclaration de variable :  		nom : type;
+						i : entier;
+	Declaration de variable (avec affectation) :		r : entier = 3;
+
+	Types simples:
+		Entier:
+			i : entier;
+		Entier non signé:
+			i : entierns;
+		Booléen:
+			i : booleen;
+		Caractère:
+			i : caractere;
+		Réel:
+			i : reel;
+		Enumérations:
+			etats : enum {x1, x2, x3};
+			etats i = x1;
+		
+	Types complexes:
+		Intervalles
+			lololol//----------------------------------ITS OVER 9000 !!!-----------------------
+		Chaînes de caractères:
+			c : chaine;
+		Tableaux:
+			i : type[nb d'élements];
+			i : entier[5];
+		Tableaux a plusieurs dimensions:
+			i : type[nb d'élements][nb d'éléments]....[nb d'éléments];
+			i : entier[2][5];
+		Pointeur sur un element d'un type donné:
+			i : *entier;
+			j : *entier;
+			*i = 3;
+			i = j;
+
+
+	Expressions arithmétiques et logiques:
+		Affection   //---------------------------------WTF IS THIS SH*T------------------------
+			i : entier = 1;
+			i = 2;
+		Inférieur
+			x < y;
+		Inférieur ou égal
+			x <= y;
+		Supérieur
+			x > y;
+		Superior ou égal
+			x >= y;
+		

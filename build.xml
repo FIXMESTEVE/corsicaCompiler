@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ====================================================================== 
+23 déc. 2008 11:16:57                                                        
+
+Calculette project    
+compilation du projet Calculette
+
+reprise 2013/09/23
+Lionel                                                                
+====================================================================== -->
+<project name="Lexer project" default="default">
+  <property name="LIB" location="lib" />
+  <property name="SRC" location="src" />
+  <property name="BIN" location="bin" />
+  <property name="PARSER" location="parser" />
+  <property name="LEXER" location="lexer" />
+  
+  <description>
+    Compilation du projet Lexer
+  </description>
+  
+  <!-- ================================= 
+       target: default              
+       ================================= -->
+  <target name="default" depends="calc" description="Execution de la calculette">
+    
+    <java 
+	classname="Main"
+        classpath=".:${BIN}:${LIB}/java-cup-11a-runtime.jar"
+
+	output="Output.txt"
+  error="Erreur.txt">
+      <arg value="Input.txt"/>
+    </java>
+    
+  </target>
+  
+  <!-- ================================= 
+       target: calc              
+       ================================= -->
+  <target name="calc" depends="parser, lexer" description="Compilation de la calculette">
+    <mkdir dir="${BIN}" />
+    <javac 
+	srcdir="${SRC}"
+	destdir="${BIN}" 
+	classpath="${LIB}/java-cup-11a-runtime.jar" 
+	Debug="on" />
+    
+  </target>
+  
+  <!-- =================================
+       target: lexer
+       ================================= -->
+  <target name="lexer">
+    
+    <taskdef name="jflex" classname="JFlex.anttask.JFlexTask">
+      <classpath location="${LIB}/JFlex.jar" />
+    </taskdef>
+    
+    <jflex 
+	file="${LEXER}/compiler.jflex" 
+	destdir="${SRC}"/>
+  </target>
+  
+  <!-- ================================= 
+       target: parser              
+       ================================= -->
+  <target name="parser" description="Compilation du parseur">
+    
+    <taskdef name="cup" classname="java_cup.anttask.CUPTask">
+      <classpath location="${LIB}/java-cup-11a.jar" />
+    </taskdef>
+    
+    <cup 
+	srcfile="${PARSER}/compiler.cup"
+	destdir="${SRC}"
+	parser="CompilerParser"
+	symbols="CompilerSymbol"
+	expect="0"
+	dump_grammar="false" 
+	dump_states="false" 
+	dump_tables="false" 
+	/>
+  </target>
+  
+</project>

@@ -1,0 +1,200 @@
+// CUP specification for a simple expression evaluator (w/ actions)
+
+import java_cup.runtime.*;
+import java.lang.Number;
+
+
+
+action code {:
+	public void show_error(int ligne, int colonne) {
+         System.out.println("--- Error ---" );
+         System.out.println("Ligne " +ligne+ " -- Colonne " +colonne);
+    }
+:};
+
+parser code {:
+	public void syntax_error(Symbol cur_token){
+		System.out.println("--- Error ---" );
+        System.out.println("Ligne " +(cur_token.left + 1)+ " -- Colonne " + (cur_token.right + 1));
+        report_error("Syntax error", null);
+	}
+
+	public void unrecovered_syntax_error(Symbol cur_token)
+	{
+		System.out.println("--- Error ---" );
+        System.out.println("Ligne " +(cur_token.left + 1)+ " -- Colonne " + (cur_token.right + 1));
+		System.out.println("unrecovered_syntax_error");
+	}
+:};
+
+init with {:
+
+:};
+
+
+terminal LPAR, RPAR, PLUS, MINUS, TIMES, DIVIDE, MINUS_U, SEMIC, AND, OR, EQUAL, DIFF, INF, INFE, SUP, SUPE, AFFECT;
+terminal NUMBER, PROP, NUMBER_VAR, PROP_VAR;
+terminal INT, UINT, FLOAT, BOOL, CHAR;
+
+non terminal statements, statement;
+
+non terminal expr_num;
+non terminal expr_bool;
+non terminal expr_complex;
+
+non terminal tab;
+non terminal tabmultidim;
+non terminal chaine;
+
+precedence left OR;
+precedence left AND;
+precedence left EQUAL, DIFF;
+precedence left INF, SUP, INFE, SUPE;
+precedence left PLUS, MINUS;
+precedence left TIMES, DIVIDE;
+precedence left MINUS_U;
+
+start with statements;
+
+statements ::=
+	statements statement
+	|statement;
+
+statement :==
+	expr_num:e SEMIC {: :}
+	|expr_bool SEMIC {: :}
+	|expr_complex {: :}
+	;
+
+expr_num ::=
+	NUMBER_VAR:n INT {: :}
+	|NUMBER_VAR:n UINT {: :}
+	|NUMBER_VAR:n FLOAT {:  :}
+	|NUMBER_VAR:n1 INT AFFECT NUMBER:n2 {: :}
+	|NUMBER_VAR:n1 UINT AFFECT NUMBER:n2 {: :}
+	|NUMBER_VAR:n1 FLOAT AFFECT NUMBER:n2 {:  :}
+	|NUMBER_VAR:n1 AFFECT NUMBER:n2 {: :}
+	|expr_num:n1 PLUS expr_num:n2 {: :}
+	|expr_num:n1 MINUS expr_num:n2 {: :}
+	|expr_num:n1 TIMES expr_num:n2 {: :}
+	|expr_num:n1 DIVIDE expr_num:n2 {: :}
+	|LPAR:lpar expr_num:e RPAR:rpar {: :}
+	|NUMBER:n {:  :}
+	;    /* il est nécessaire de se pencher sur l'affectation/déclaration */
+
+expr_bool ::=
+	PROP_VAR:p BOOL {: :}
+	|PROP_VAR:p1 BOOL AFFECT PROP:p2 {: :}
+	|PROP_VAR:p1 AFFECT PROP:p2 {:  :}
+	|expr_bool:p1 AND expr_bool:p2 {: :}
+	|expr_bool:p1 OR expr_bool:p2 {:  :}
+	|expr_num:n1 EQUAL expr_num:n2 {:  :}
+	|expr_num:n1 DIFF expr_num:n2 {:  :}
+	|expr_bool:p1 EQUAL expr_bool:p2 {:  :}
+	|expr_bool:p1 DIFF expr_bool:p2 {:  :}
+	|expr_num:n1 SUP expr_num:n2 {:  :}
+	|expr_num:n1 INF expr_num:n2 {:  :}
+	|expr_num:n1 SUPE expr_num:n2 {:  :}
+	|expr_num:n1 INFE expr_num:n2 {:  :}
+	|PROP:p {:  :}
+	;
+
+
+/*terminal NUM, ID, OP, LPAR, RPAR;
+terminal Float NUMBER;
+non terminal statements, p, exp, listargs, stm, expbool, liststms;
+
+start with statements;
+
+statements ::= 
+	statements p
+	| p;
+
+exp ::=
+    NUM {: :}
+    |ID {: :}
+    |exp OP exp {: :}
+    |OP exp{: :}
+    |ID LPAR listargs RPAR {: :}
+    ;
+
+
+p ::=
+    d ss {: :}
+    ;
+
+d ::=
+    t l {: :}
+    ;
+
+t ::=
+    TYPE_INTEGER {: :}
+    |TYPE_REAL {: :}
+    ;
+
+l ::=
+    l COMA i {: :}   
+    |i {: :}
+    ;
+
+i ::=
+    ID {: :}
+    |i LS_BRACKET INTEGER RS_BRACKET {: :}
+    ;
+
+ss ::=
+    ss s {: :}
+    | s {: :}
+    ;
+    
+s ::=
+    ID AFFECT e {: :}
+    ;
+
+e ::=
+    LS_BRACKET INTEGER RS_BRACKET {: :}
+    |REAL {: :}
+    ;
+*/
+
+
+
+
+
+
+/*statement ::=
+	expr:e SEMIC {: System.out.println(e); :}
+	|error SEMIC {::}
+	;
+
+expr ::=
+    expr:e1 PLUS:p expr:e2 {: RESULT = new ArbreSyntAbstr(e1, e2, EnumTag.PLUS, null); :}
+	|expr:e1 MINUS:m expr:e2 {: RESULT = new ArbreSyntAbstr(e1, e2, EnumTag.MINUS, null); :}
+    |expr:e1 MULT:t expr:e2 {: RESULT = new ArbreSyntAbstr(e1, e2, EnumTag.MULT, null); :}
+    |expr:e1 DIV:d expr:e2 {: RESULT = new ArbreSyntAbstr(e1, e2, EnumTag.DIV, null); :}
+    |expr:e1 MOD:d expr:e2 {: RESULT = new ArbreSyntAbstr(e1, e2, EnumTag.MOD, null); :}
+    |expr:e1 EQ:d expr:e2 {: RESULT = new ArbreSyntAbstr(e1, e2, EnumTag.EQ, null); :}
+    |expr:e1 DIFF:d expr:e2 {: RESULT = new ArbreSyntAbstr(e1, e2, EnumTag.DIFF, null); :}
+    |expr:e1 LT:d expr:e2 {: RESULT = new ArbreSyntAbstr(e1, e2, EnumTag.LT, null); :}
+    |expr:e1 LE:d expr:e2 {: RESULT = new ArbreSyntAbstr(e1, e2, EnumTag.LE, null); :}
+    |expr:e1 GT:d expr:e2 {: RESULT = new ArbreSyntAbstr(e1, e2, EnumTag.GT, null); :}
+    |expr:e1 GE:d expr:e2 {: RESULT = new ArbreSyntAbstr(e1, e2, EnumTag.GE, null); :}
+    |expr:e1 AND:d expr:e2 {: RESULT = new ArbreSyntAbstr(e1, e2, EnumTag.AND, null); :}
+    |expr:e1 OR:d expr:e2 {: RESULT = new ArbreSyntAbstr(e1, e2, EnumTag.OR, null); :}
+    |expr:e1 IMPL:d expr:e2 {: RESULT = new ArbreSyntAbstr(e1, e2, EnumTag.IMPL, null); :}
+    |expr:e1 EQUIV:d expr:e2 {: RESULT = new ArbreSyntAbstr(e1, e2, EnumTag.EQUIV, null); :}
+
+    |expr:e1 QUEST expr:e2 COLON expr:e3 {: RESULT = new ArbreSyntAbstr(e1, new ArbreSyntAbstr(e2, e3, EnumTag.COLON, null), EnumTag.QUEST, null); :}
+
+    |LPAR expr:e RPAR {: RESULT = e; :}
+
+    |NOT expr:e {: RESULT = new ArbreSyntAbstr(null, e, EnumTag.NOT, null); :}
+    |MINUS expr:e {: RESULT = new ArbreSyntAbstr(null, e, EnumTag.MINUS, null); :} %prec MINUS_U
+	|INTEGER:n {: RESULT = new ArbreSyntAbstr(EnumTag.INTEGER, n); :}
+	|REAL:n {: RESULT = new ArbreSyntAbstr(EnumTag.REAL, n); :}
+    |COMPLEX:n {: RESULT = new ArbreSyntAbstr(EnumTag.COMPLEX, n); :}
+	//|BOOLEAN:n {: RESULT = new ArbreSyntAbstr(EnumTag.BOOLEAN, n); :}
+	|
+    ;
+*/
+
