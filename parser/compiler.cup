@@ -107,7 +107,7 @@ expr_bool ::=
 	|expr_num:n1 INF expr_num:n2 {:  :}
 	|expr_num:n1 SUPE expr_num:n2 {:  :}
 	|expr_num:n1 INFE expr_num:n2 {:  :}
-	|PROP:p {:  :} lol
+	|PROP:p {:  :} 
 	;
 
 
