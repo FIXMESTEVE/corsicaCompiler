@@ -7,12 +7,49 @@ import java_cup.runtime.Symbol;
 %cupsym CompilerSymbol
 %cup
 
+/* -------------------------------------------------
+        Commentaires
+   ------------------------------------------------- */
+Comment   = "/*" [^*] ~"*/" | "/*" "*"+ "/"
+
 NumberReal = "-"?[[:digit:]]+(\.[[:digit:]]+)?([Ee][+-]?[[:digit:]]+)?
 NumberComplexe = {NumberReal}"+"{NumberReal}"i"
 NumberInteger = "-"?[[:digit:]]+
-Comment   = "/*" [^*] ~"*/" | "/*" "*"+ "/"
 
-%%
+				 VAR = [a-zA-Z]+[1-9]*
+				 NUMBER = NumberInteger|NumberReal
+				 INT = ":"[[:space:]]*"entier"
+				 UINT = ":"[[:space:]]*"entierns"
+				 FLOAT = ":"[[:space:]]*"reel"
+				 BOOL = ":"[[:space]]*"booleen"
+				 
+				 
+				 
+				 
+				 %%
+				 INT {return new Symbol(CompilerSymbol.INT, yyline, yycolumn);}
+						UINT {return new Symbol(CompilerSymbol.UINT, yyline, yycolumn);}
+FLOAT {return new Symbol(CompilerSymbol.FLOAT, yyline, yycolumn);}
+BOOL {return new Symbol(CompilerSymbol.BOOL, yyline, yycolumn);}
+
+"+"     { return new Symbol(CompilerSymbol.PLUS, yyline, yycolumn); }
+"-"     { return new Symbol(CompilerSymbol.MINUS, yyline, yycolumn); }
+"*"     { return new Symbol(CompilerSymbol.MULT, yyline, yycolumn); }
+"/"     { return new Symbol(CompilerSymbol.DIV, yyline, yycolumn); }
+"("     { return new Symbol(CompilerSymbol.LPAR, yyline, yycolumn); }
+")"     { return new Symbol(CompilerSymbol.RPAR, yyline, yycolumn); }
+"vrai"     { return new Symbol(CompilerSymbol.BOOL, yyline, yytext()); }
+"faux"      { return new Symbol(CompilerSymbol.BOOL, yyline, yytext()); }
+"%"     { return new Symbol(CompilerSymbol.MOD, yyline, yycolumn); }
+"=="    { return new Symbol(CompilerSymbol.EQUAL, yyline, yycolumn); }
+"!="    { return new Symbol(CompilerSymbol.DIFF, yyline, yycolumn); }
+"<"     { return new Symbol(CompilerSymbol.INF, yyline, yycolumn); }
+"<="    { return new Symbol(CompilerSymbol.INFE, yyline, yycolumn); }
+">"     { return new Symbol(CompilerSymbol.SUP, yyline, yycolumn); }
+">="    { return new Symbol(CompilerSymbol.SUPE, yyline, yycolumn); }
+"&"    { return new Symbol(CompilerSymbol.AND, yyline, yycolumn); }
+"|"    { return new Symbol(CompilerSymbol.OR, yyline, yycolumn); }
+"!"     { return new Symbol(CompilerSymbol.NOT, yyline, yycolumn); }
 
 /* -------------------------------------------------
         Operateurs

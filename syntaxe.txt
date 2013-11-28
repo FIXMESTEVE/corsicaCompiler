@@ -16,6 +16,8 @@ Syntaxe adoptée lors du projet de Compilation :
 			i : entierns;
 		Booléen:
 			i : booleen;
+			i = vrai;
+			i = faux;
 		Caractère:
 			i : caractere;
 		Réel:
