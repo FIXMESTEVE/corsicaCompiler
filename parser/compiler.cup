@@ -1,5 +1,7 @@
 // CUP specification for a simple expression evaluator (w/ actions)
 
+//todo: % et ! (not)
+
 import java_cup.runtime.*;
 import java.lang.Number;
 
