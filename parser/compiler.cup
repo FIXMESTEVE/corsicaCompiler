@@ -35,7 +35,7 @@ init with {:
 
 
 terminal LPAR, RPAR, PLUS, MINUS, TIMES, DIVIDE, MINUS_U, SEMIC, AND, OR, EQUAL, DIFF, INF, INFE, SUP, SUPE, AFFECT;
-terminal NUMBER, PROP, NUMBER_VAR, PROP_VAR;
+terminal NUMBER, PROP, VAR;
 terminal INT, UINT, FLOAT, BOOL, CHAR;
 
 non terminal statements, statement;
@@ -43,6 +43,8 @@ non terminal statements, statement;
 non terminal expr_num;
 non terminal expr_bool;
 non terminal expr_complex;
+non terminal expr_num_decl;
+non terminal expr_bool_decl;
 
 non terminal tab;
 non terminal tabmultidim;
@@ -62,7 +64,7 @@ statements ::=
 	statements statement
 	|statement;
 
-statement :==	
+statement ::=	
 	expr_num:e SEMIC {: :}
 	|expr_bool:e SEMIC {: :}
 	|expr_complex:e SEMIC {: :}
@@ -70,22 +72,22 @@ statement :==
 	|expr_bool_decl SEMIC {: :}			 
 	;
 
-expr_num_decl :==
-	NUMBER_VAR:n INT {: :}
-	|NUMBER_VAR:n UINT {: :}
-	|NUMBER_VAR:n FLOAT {:  :}
-	|NUMBER_VAR:n1 INT AFFECT NUMBER:n2 {: :}
-	|NUMBER_VAR:n1 UINT AFFECT NUMBER:n2 {: :}
-	|NUMBER_VAR:n1 FLOAT AFFECT NUMBER:n2 {:  :}	
-	|NUMBER_VAR:n1 AFFECT NUMBER:n2 {: :}
-	|NUMBER_VAR:n1 AFFECT expr_num:n2 {: :}
+expr_num_decl ::=
+	VAR:n INT {: :}
+	|VAR:n UINT {: :}
+	|VAR:n FLOAT {:  :}
+	|VAR:n1 INT AFFECT NUMBER:n2 {: :}
+	|VAR:n1 UINT AFFECT NUMBER:n2 {: :}
+	|VAR:n1 FLOAT AFFECT NUMBER:n2 {:  :}	
+	|VAR:n1 AFFECT NUMBER:n2 {: :}
+	|VAR:n1 AFFECT expr_num:n2 {: :}
 	;
 
-expr_bool_decl :==
-	PROP_VAR:p BOOL {: :}
-	|PROP_VAR:p1 BOOL AFFECT PROP:p2 {: :}
-	|PROP_VAR:p1 AFFECT PROP:p2 {:  :}
-	|PROP_VAR:p1 AFFECT expr_bool:p2 {: :}
+expr_bool_decl ::=
+	VAR:p BOOL {: :}
+	|VAR:p1 BOOL AFFECT PROP:p2 {: :}
+	|VAR:p1 AFFECT PROP:p2 {:  :}
+	|VAR:p1 AFFECT expr_bool:p2 {: :}
 	;
 
 expr_num ::=
@@ -95,7 +97,7 @@ expr_num ::=
 	|expr_num:n1 DIVIDE expr_num:n2 {: :}
 	|LPAR:lpar expr_num:e RPAR:rpar {: :}
 	|NUMBER:n {:  :}
-	|NUMBER_VAR {: :}
+	|VAR {: :}
 	;    /* il est nécessaire de se pencher sur l'affectation/déclaration */
 
 expr_bool ::=

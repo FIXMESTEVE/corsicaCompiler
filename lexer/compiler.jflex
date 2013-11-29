@@ -10,25 +10,27 @@ import java_cup.runtime.Symbol;
 /* -------------------------------------------------
         Commentaires
    ------------------------------------------------- */
-Comment   = "/*" [^*] ~"*/" | "/*" "*"+ "/"
+    Comment   = "/*" [^*] ~"*/" | "/*" "*"+ "/"
 
-NumberReal = "-"?[[:digit:]]+(\.[[:digit:]]+)?([Ee][+-]?[[:digit:]]+)?
-NumberComplexe = {NumberReal}"+"{NumberReal}"i"
-NumberInteger = "-"?[[:digit:]]+
-
-				 VAR = [a-zA-Z]+[1-9]*
-				 NUMBER = NumberInteger|NumberReal
-				 INT = ":"[[:space:]]*"entier"
-				 UINT = ":"[[:space:]]*"entierns"
-				 FLOAT = ":"[[:space:]]*"reel"
-				 BOOL = ":"[[:space]]*"booleen"
-				 
-				 
-				 
-				 
-				 %%
-				 INT {return new Symbol(CompilerSymbol.INT, yyline, yycolumn);}
-						UINT {return new Symbol(CompilerSymbol.UINT, yyline, yycolumn);}
+    NumberReal = "-"?[[:digit:]]+(\.[[:digit:]]+)?([Ee][+-]?[[:digit:]]+)?
+    NumberComplexe = {NumberReal}"+"{NumberReal}"i"
+    NumberInteger = "-"?[[:digit:]]+
+				     
+				     VAR = [a-zA-Z]+[1-9]*
+				     NUMBER = NumberInteger|NumberReal
+				     INT = ":"[[:space:]]*"entier"
+				     UINT = ":"[[:space:]]*"entierns"
+				     FLOAT = ":"[[:space:]]*"reel"
+				     BOOL = ":"[[:space]]*"booleen"
+				     
+				     
+				     
+				     
+				     %%
+				     VAR {return new Symbol(CompilerSymbol.VAR), yyline, yycolumn);}
+						    NUMBER {return new Symbol(CompilerSymbol.NUMBER), yyline, yycolumn;}
+INT {return new Symbol(CompilerSymbol.INT), yyline, yycolumn);}
+UINT {return new Symbol(CompilerSymbol.UINT, yyline, yycolumn);}
 FLOAT {return new Symbol(CompilerSymbol.FLOAT, yyline, yycolumn);}
 BOOL {return new Symbol(CompilerSymbol.BOOL, yyline, yycolumn);}
 
