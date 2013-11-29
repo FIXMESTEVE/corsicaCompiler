@@ -34,7 +34,7 @@ init with {:
 :};
 
 
-terminal LPAR, RPAR, PLUS, MINUS, TIMES, DIVIDE, MINUS_U, SEMIC, AND, OR, EQUAL, DIFF, INF, INFE, SUP, SUPE, AFFECT;
+terminal LPAR, RPAR, PLUS, MINUS, TIMES, DIVIDE, MINUS_U, SEMIC, AND, OR, EQUAL, DIFF, INF, INFE, SUP, SUPE, AFFECT, TRUE, FALSE;
 terminal NUMBER, PROP, VAR;
 terminal INT, UINT, FLOAT, BOOL, CHAR;
 
@@ -79,14 +79,14 @@ expr_num_decl ::=
 	|VAR:n1 INT AFFECT NUMBER:n2 {: :}
 	|VAR:n1 UINT AFFECT NUMBER:n2 {: :}
 	|VAR:n1 FLOAT AFFECT NUMBER:n2 {:  :}	
-	|VAR:n1 AFFECT NUMBER:n2 {: :}
+//|VAR:n1 AFFECT NUMBER:n2 {: :} conflit. inutile car surchargé par la ligne en dessous?
 	|VAR:n1 AFFECT expr_num:n2 {: :}
 	;
 
 expr_bool_decl ::=
 	VAR:p BOOL {: :}
 	|VAR:p1 BOOL AFFECT PROP:p2 {: :}
-	|VAR:p1 AFFECT PROP:p2 {:  :}
+//|VAR:p1 AFFECT PROP:p2 {:  :} conflit. inutile car surchargé par la ligne en dessous?
 	|VAR:p1 AFFECT expr_bool:p2 {: :}
 	;
 

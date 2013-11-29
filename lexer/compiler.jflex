@@ -10,29 +10,29 @@ import java_cup.runtime.Symbol;
 /* -------------------------------------------------
         Commentaires
    ------------------------------------------------- */
-    Comment   = "/*" [^*] ~"*/" | "/*" "*"+ "/"
+Comment   = "/*" [^*] ~"*/" | "/*" "*"+ "/"
 
-    NumberReal = "-"?[[:digit:]]+(\.[[:digit:]]+)?([Ee][+-]?[[:digit:]]+)?
-    NumberComplexe = {NumberReal}"+"{NumberReal}"i"
-    NumberInteger = "-"?[[:digit:]]+
+NumberReal = "-"?[[:digit:]]+(\.[[:digit:]]+)?([Ee][+-]?[[:digit:]]+)?
+NumberComplexe = {NumberReal}"+"{NumberReal}"i"
+NumberInteger = "-"?[[:digit:]]+
 				     
-				     VAR = [a-zA-Z]+[1-9]*
-				     NUMBER = NumberInteger|NumberReal
-				     INT = ":"[[:space:]]*"entier"
-				     UINT = ":"[[:space:]]*"entierns"
-				     FLOAT = ":"[[:space:]]*"reel"
-				     BOOL = ":"[[:space]]*"booleen"
-				     
-				     
+VAR = [a-zA-Z]+[1-9]*
+NUMBER = {NumberInteger}|{NumberReal}
+INT = ": entier" //todo: space*
+UINT = ": entierns"
+FLOAT = ": reel"
+BOOL = ": booleen"
 				     
 				     
-				     %%
-				     VAR {return new Symbol(CompilerSymbol.VAR), yyline, yycolumn);}
-						    NUMBER {return new Symbol(CompilerSymbol.NUMBER), yyline, yycolumn;}
-INT {return new Symbol(CompilerSymbol.INT), yyline, yycolumn);}
-UINT {return new Symbol(CompilerSymbol.UINT, yyline, yycolumn);}
-FLOAT {return new Symbol(CompilerSymbol.FLOAT, yyline, yycolumn);}
-BOOL {return new Symbol(CompilerSymbol.BOOL, yyline, yycolumn);}
+				     
+				     
+%%
+{VAR} {return new Symbol(CompilerSymbol.VAR), yyline, yycolumn);}
+{NUMBER} {return new Symbol(CompilerSymbol.NUMBER), yyline, yycolumn;}
+{INT} {return new Symbol(CompilerSymbol.INT), yyline, yycolumn);}
+{UINT} {return new Symbol(CompilerSymbol.UINT, yyline, yycolumn);}
+{FLOAT} {return new Symbol(CompilerSymbol.FLOAT, yyline, yycolumn);}
+{BOOL} {return new Symbol(CompilerSymbol.BOOL, yyline, yycolumn);}
 
 "+"     { return new Symbol(CompilerSymbol.PLUS, yyline, yycolumn); }
 "-"     { return new Symbol(CompilerSymbol.MINUS, yyline, yycolumn); }
@@ -40,8 +40,8 @@ BOOL {return new Symbol(CompilerSymbol.BOOL, yyline, yycolumn);}
 "/"     { return new Symbol(CompilerSymbol.DIV, yyline, yycolumn); }
 "("     { return new Symbol(CompilerSymbol.LPAR, yyline, yycolumn); }
 ")"     { return new Symbol(CompilerSymbol.RPAR, yyline, yycolumn); }
-"vrai"     { return new Symbol(CompilerSymbol.BOOL, yyline, yytext()); }
-"faux"      { return new Symbol(CompilerSymbol.BOOL, yyline, yytext()); }
+"vrai"     { return new Symbol(CompilerSymbol.TRUE, yyline, yytext()); }
+"faux"      { return new Symbol(CompilerSymbol.FALSE, yyline, yytext()); }
 "%"     { return new Symbol(CompilerSymbol.MOD, yyline, yycolumn); }
 "=="    { return new Symbol(CompilerSymbol.EQUAL, yyline, yycolumn); }
 "!="    { return new Symbol(CompilerSymbol.DIFF, yyline, yycolumn); }
@@ -76,7 +76,8 @@ BOOL {return new Symbol(CompilerSymbol.BOOL, yyline, yycolumn);}
 */
 
 
-/*"true"     { return new Symbol(CompilerSymbol.BOOLEAN, yyline, yytext()); }
+/*
+"true"     { return new Symbol(CompilerSymbol.BOOLEAN, yyline, yytext()); }
 "false"      { return new Symbol(CompilerSymbol.BOOLEAN, yyline, yytext()); }
 "%"     { return new Symbol(CompilerSymbol.MOD, yyline, yycolumn); }
 "=="    { return new Symbol(CompilerSymbol.EQ, yyline, yycolumn); }
@@ -92,7 +93,7 @@ BOOL {return new Symbol(CompilerSymbol.BOOL, yyline, yycolumn);}
 "<->"   { return new Symbol(CompilerSymbol.EQUIV, yyline, yycolumn); }
 "?"     { return new Symbol(CompilerSymbol.QUEST, yyline, yycolumn); }
 ":"     { return new Symbol(CompilerSymbol.COLON, yyline, yycolumn); }
-
+*/
 
 /* -------------------------------------------------
         Nombres
