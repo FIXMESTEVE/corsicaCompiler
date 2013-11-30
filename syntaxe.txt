@@ -1,4 +1,3 @@
-
 Syntaxe adoptée lors du projet de Compilation :
 	
 	Commentaire : 
@@ -31,7 +30,7 @@ Syntaxe adoptée lors du projet de Compilation :
 			lololol//----------------------------------ITS OVER 9000 !!!-----------------------
 		Chaînes de caractères:
 			c : chaine;
-		Tableaux:
+		Tableaux: (l'indice de début est 0)
 			i : type[nb d'élements];
 			i : entier[5];
 		Tableaux a plusieurs dimensions:
