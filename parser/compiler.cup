@@ -37,6 +37,7 @@ init with {:
 terminal LPAR, RPAR, PLUS, MINUS, TIMES, DIVIDE, MINUS_U, SEMIC, AND, OR, EQUAL, DIFF, INF, INFE, SUP, SUPE, AFFECT, TRUE, FALSE;
 terminal NUMBER, PROP, VAR;
 terminal INT, UINT, FLOAT, BOOL, CHAR;
+terminal INDTAB;
 
 non terminal statements, statement;
 
@@ -45,9 +46,11 @@ non terminal expr_bool;
 non terminal expr_complex;
 non terminal expr_num_decl;
 non terminal expr_bool_decl;
+non terminal expr_complex_decl;
 
-non terminal tab;
-non terminal tabmultidim;
+non terminal dim_tableau;
+non terminal var_tableau;
+
 non terminal chaine;
 
 precedence left OR;
@@ -76,15 +79,15 @@ expr_num_decl ::=
 	VAR:n INT {: :}
 	|VAR:n UINT {: :}
 	|VAR:n FLOAT {:  :}
-	|VAR:n1 INT AFFECT NUMBER:n2 {: :}
-	|VAR:n1 UINT AFFECT NUMBER:n2 {: :}
-	|VAR:n1 FLOAT AFFECT NUMBER:n2 {:  :}	
+	|VAR:n1 INT AFFECT expr_num:n2 {: :}
+	|VAR:n1 UINT AFFECT expr_num:n2 {: :}
+	|VAR:n1 FLOAT AFFECT expr_num:n2 {: :}	
 	|VAR:n1 AFFECT expr_num:n2 {: :}
 	;
 
 expr_bool_decl ::=
 	VAR:p BOOL {: :}
-	|VAR:p1 BOOL AFFECT PROP:p2 {: :}
+	|VAR:p1 BOOL AFFECT expr_bool:p2 {: :}
 	|VAR:p1 AFFECT expr_bool:p2 {: :}
 	;
 
@@ -96,6 +99,7 @@ expr_num ::=
 	|LPAR:lpar expr_num:e RPAR:rpar {: :}
 	|NUMBER:n {:  :}
 	|VAR:n1 {: :}
+	|var_tableau:n {: :}
 	;    
 
 expr_bool ::=
@@ -111,9 +115,30 @@ expr_bool ::=
 	|expr_num:n1 INFE expr_num:n2 {:  :}
 	|PROP:p {:  :} 
 	|VAR:p {: :}
+	|var_tableau:p {: :}
 	;
 
 
+dim_tableau ::=                             /* INDTAB = "[i]" dans "tab[i]" */
+	dim_tableau:t1 INDTAB:t2 {: :}
+	|INDTAB:t {: :}
+	;
 
+var_tableau ::=
+	VAR dim_tableau:t {: :}
+	;
+
+expr_complex_decl ::= 
+	VAR:c1 INT dim_tableau {:  :}
+	|VAR:c1 UINT dim_tableau {:  :}
+	|VAR:c1 FLOAT dim_tableau {:  :}
+	|VAR:c1 BOOL dim_tableau {:  :}
+	|VAR:c1 TAB dim_tableau {:  :}
+	|VAR:c1 INDTAB:c2 AFFECT expr_num:c3 {: :}
+	|VAR:c1 INDTAB:c2 AFFECT expr_bool:c3 {: :}
+	|VAR:c1 INDTAB:c2 AFFECT VAR:c3 {: :}   /* On suppose que l'on peut ainsi déclarer des tableaux de tableaux */
+	;
+	
+	
 
 
