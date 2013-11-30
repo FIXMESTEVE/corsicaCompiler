@@ -35,7 +35,7 @@ init with {:
 
 
 terminal LPAR, RPAR, LPARTAB, RPARTAB, PLUS, MINUS, TIMES, DIVIDE, MINUS_U, SEMIC, AND, OR, EQUAL, DIFF, INF, INFE, SUP, SUPE, AFFECT, TRUE, FALSE;
-terminal NUMBER, PROP, VAR;
+terminal NUMBER, PROP, VAR, CHAINE;
 terminal INT, UINT, FLOAT, BOOL, CHAR;
 
 non terminal statements, statement;
@@ -142,6 +142,7 @@ expr_complex_decl ::=
 	|VAR:c1 INDTAB:c2 AFFECT expr_num:c3 {: :}
 	|VAR:c1 INDTAB:c2 AFFECT expr_bool:c3 {: :}
 	|VAR:c1 INDTAB:c2 AFFECT VAR:c3 {: :}   /* On suppose que l'on peut ainsi déclarer des tableaux de tableaux */
+	|VAR:c1 AFFECT CHAINE:c2 {: :}
 	;
 	
 	
