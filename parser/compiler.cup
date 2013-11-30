@@ -34,10 +34,9 @@ init with {:
 :};
 
 
-terminal LPAR, RPAR, PLUS, MINUS, TIMES, DIVIDE, MINUS_U, SEMIC, AND, OR, EQUAL, DIFF, INF, INFE, SUP, SUPE, AFFECT, TRUE, FALSE;
+terminal LPAR, RPAR, LPARTAB, RPARTAB, PLUS, MINUS, TIMES, DIVIDE, MINUS_U, SEMIC, AND, OR, EQUAL, DIFF, INF, INFE, SUP, SUPE, AFFECT, TRUE, FALSE;
 terminal NUMBER, PROP, VAR;
 terminal INT, UINT, FLOAT, BOOL, CHAR;
-terminal INDTAB;
 
 non terminal statements, statement;
 
@@ -50,6 +49,7 @@ non terminal expr_complex_decl;
 
 non terminal dim_tableau;
 non terminal var_tableau;
+non terminal indtab;
 
 non terminal chaine;
 
@@ -119,9 +119,14 @@ expr_bool ::=
 	;
 
 
-dim_tableau ::=                             /* INDTAB = "[i]" dans "tab[i]" */
-	dim_tableau:t1 INDTAB:t2 {: :}
-	|INDTAB:t {: :}
+dim_tableau ::=                            
+	dim_tableau:t1 indtab:t2 {: :}
+	|indtab:t {: :}
+	;
+
+indtab ::=                                 /* INDTAB = "[i]" dans "tab[i]" */
+	LPARTAB NUMBER:i RPARTAB {: :}
+	|LPARTAB VAR:i RPARTAB {: :}
 	;
 
 var_tableau ::=
