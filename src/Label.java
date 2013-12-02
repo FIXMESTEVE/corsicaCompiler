@@ -1,13 +1,13 @@
 public class Label{
     private int num;
-    private int next = 0;
+    private static int next = 0;
     
-    Temporary(){
-	num = next++;
+    public Label(){
+		num = next++;
     }
 
-    public void print(){
-	String s = "L" + num.toString();
-	return s;
+    public String print(){
+		String s = "L" + num;
+		return s;
     }
 }

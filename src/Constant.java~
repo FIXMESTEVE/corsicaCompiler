@@ -1,0 +1,11 @@
+public class Constant implements Address{
+    private int value;
+
+    Constant(int v){
+	value = v;
+    }
+    
+    public void print(){
+	System.out.println(value.toString());
+    }
+}

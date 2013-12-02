@@ -1,0 +1,10 @@
+abstract class BooleanExpression implements Expression {
+    Address generateCode(){
+	Label ltrue = new Label();
+	Label lfalse = new Label();
+	Label next = new Label();
+	generateJump(ltrue, lfalse);
+	Address result = new Temporary();
+	System.out.println//todo from here
+    }
+}

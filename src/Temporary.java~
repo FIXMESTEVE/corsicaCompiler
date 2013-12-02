@@ -1,0 +1,11 @@
+public class Temporary implements Address{
+    private int num;
+
+    Temporary(int n){
+	num = n;
+    }
+
+    public void print(){
+	System.out.println(value.toString());
+    }
+}

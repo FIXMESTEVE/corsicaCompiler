@@ -1,0 +1,4 @@
+interface Expression{
+    Address generateCode();
+    void generateJump(Label true, Label false);
+}

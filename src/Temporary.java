@@ -1,13 +1,13 @@
 public class Temporary implements Address{
     private int num;
-    private int next = 0;
+    private static int next = 0;
     
     Temporary(){
-	num = next++;
+		num = next++;
     }
 
-    public void print(){
-	String s = "t" + num.toString();
-	return s;
+    public String print(){
+		String s = "t" + num;
+		return s;
     }
 }
