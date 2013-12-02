@@ -43,7 +43,7 @@ terminal INT, UINT, FLOAT, BOOL, CHAR;
 non terminal statements, statement;
 
 //////////////////////FOR TESTING
-non terminal expr_num2;
+non terminal Expression expr_num2;
 /////////////////////////////////
 non terminal Expression expr_num;
 non terminal expr_bool;
@@ -72,8 +72,7 @@ start with expr_num2;
 
 ////////////////////////////FOR TESTING
 expr_num2 ::=
-	expr_num2 expr_num:e {: e.generateCode(); :}
-	|
+	expr_num:e {: e.generateCode(); :}
 	;
 //////////////////////////////////////
 
@@ -111,8 +110,8 @@ expr_num ::=
 	|expr_num:n1 MINUS expr_num:n2 {: :}
 	|expr_num:n1 TIMES expr_num:n2 {: :}
 	|expr_num:n1 DIVIDE expr_num:n2 {: :}
-	|LPAR:lpar expr_num:e RPAR:rpar {: :}
-	|NUMBER:n {: RESULT = new Number(n); :}
+        |LPAR:lpar expr_num:e RPAR:rpar {: :}
+        |NUMBER:n {: RESULT = new Nombre(n); :}
 	|VAR:n1 {: RESULT = new Variable(n1); :}
 	|var_tableau:n {: :}
 	;    

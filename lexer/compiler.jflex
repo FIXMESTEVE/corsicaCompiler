@@ -22,9 +22,7 @@ INT = ": entier" //todo: space*
 UINT = ": entierns"
 FLOAT = ": reel"
 BOOL = ": booleen"
-				     
-				     
-				     
+				     				     			     
 				     
 %%
 {VAR} {return new Symbol(CompilerSymbol.VAR, yyline, yycolumn);}
@@ -40,8 +38,8 @@ BOOL = ": booleen"
 "/"     { return new Symbol(CompilerSymbol.DIVIDE, yyline, yycolumn); }
 "("     { return new Symbol(CompilerSymbol.LPAR, yyline, yycolumn); }
 ")"     { return new Symbol(CompilerSymbol.RPAR, yyline, yycolumn); }
-"vrai"     { return new Symbol(CompilerSymbol.TRUE, yyline, yytext()); }
-"faux"      { return new Symbol(CompilerSymbol.FALSE, yyline, yytext()); }
+"vrai"  { return new Symbol(CompilerSymbol.TRUE, yyline, yytext()); }
+"faux"  { return new Symbol(CompilerSymbol.FALSE, yyline, yytext()); }
 "%"     { return new Symbol(CompilerSymbol.MOD, yyline, yycolumn); }
 "=="    { return new Symbol(CompilerSymbol.EQUAL, yyline, yycolumn); }
 "!="    { return new Symbol(CompilerSymbol.DIFF, yyline, yycolumn); }
@@ -49,8 +47,8 @@ BOOL = ": booleen"
 "<="    { return new Symbol(CompilerSymbol.INFE, yyline, yycolumn); }
 ">"     { return new Symbol(CompilerSymbol.SUP, yyline, yycolumn); }
 ">="    { return new Symbol(CompilerSymbol.SUPE, yyline, yycolumn); }
-"&"    { return new Symbol(CompilerSymbol.AND, yyline, yycolumn); }
-"|"    { return new Symbol(CompilerSymbol.OR, yyline, yycolumn); }
+"&"     { return new Symbol(CompilerSymbol.AND, yyline, yycolumn); }
+"|"     { return new Symbol(CompilerSymbol.OR, yyline, yycolumn); }
 "!"     { return new Symbol(CompilerSymbol.NOT, yyline, yycolumn); }
 
 /* -------------------------------------------------

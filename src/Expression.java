@@ -1,4 +1,4 @@
 interface Expression{
-    Address generateCode();
-    void generateJump(Label ltrue, Label lfalse);
+    public Address generateCode();
+    public void generateJump(Label lyes, Label lno);
 }
