@@ -27,17 +27,17 @@ BOOL = ": booleen"
 				     
 				     
 %%
-{VAR} {return new Symbol(CompilerSymbol.VAR), yyline, yycolumn);}
-{NUMBER} {return new Symbol(CompilerSymbol.NUMBER), yyline, yycolumn;}
-{INT} {return new Symbol(CompilerSymbol.INT), yyline, yycolumn);}
+{VAR} {return new Symbol(CompilerSymbol.VAR, yyline, yycolumn);}
+{NUMBER} {return new Symbol(CompilerSymbol.NUMBER, yyline, yycolumn);}
+{INT} {return new Symbol(CompilerSymbol.INT, yyline, yycolumn);}
 {UINT} {return new Symbol(CompilerSymbol.UINT, yyline, yycolumn);}
 {FLOAT} {return new Symbol(CompilerSymbol.FLOAT, yyline, yycolumn);}
 {BOOL} {return new Symbol(CompilerSymbol.BOOL, yyline, yycolumn);}
 
 "+"     { return new Symbol(CompilerSymbol.PLUS, yyline, yycolumn); }
 "-"     { return new Symbol(CompilerSymbol.MINUS, yyline, yycolumn); }
-"*"     { return new Symbol(CompilerSymbol.MULT, yyline, yycolumn); }
-"/"     { return new Symbol(CompilerSymbol.DIV, yyline, yycolumn); }
+"*"     { return new Symbol(CompilerSymbol.TIMES, yyline, yycolumn); }
+"/"     { return new Symbol(CompilerSymbol.DIVIDE, yyline, yycolumn); }
 "("     { return new Symbol(CompilerSymbol.LPAR, yyline, yycolumn); }
 ")"     { return new Symbol(CompilerSymbol.RPAR, yyline, yycolumn); }
 "vrai"     { return new Symbol(CompilerSymbol.TRUE, yyline, yytext()); }

@@ -34,13 +34,18 @@ init with {:
 :};
 
 
-terminal LPAR, RPAR, LPARTAB, RPARTAB, PLUS, MINUS, TIMES, DIVIDE, MINUS_U, SEMIC, AND, OR, EQUAL, DIFF, INF, INFE, SUP, SUPE, AFFECT, TRUE, FALSE;
-terminal NUMBER, PROP, VAR, CHAINE;
+terminal LPAR, RPAR, LPARTAB, RPARTAB, PLUS, MINUS, TIMES, DIVIDE, MINUS_U, SEMIC, AND, OR, EQUAL, DIFF, INF, INFE, SUP, SUPE, AFFECT, TRUE, FALSE, TAB, INDTAB, MOD, NOT;
+terminal PROP, CHAINE;
+terminal String VAR;
+terminal Integer NUMBER;
 terminal INT, UINT, FLOAT, BOOL, CHAR;
 
 non terminal statements, statement;
 
-non terminal expr_num;
+//////////////////////FOR TESTING
+non terminal expr_num2;
+/////////////////////////////////
+non terminal Expression expr_num;
 non terminal expr_bool;
 non terminal expr_complex;
 non terminal expr_num_decl;
@@ -61,7 +66,17 @@ precedence left PLUS, MINUS;
 precedence left TIMES, DIVIDE;
 precedence left MINUS_U;
 
-start with statements;
+//start with statements;
+start with expr_num2;
+
+
+////////////////////////////FOR TESTING
+expr_num2 ::=
+	expr_num2 expr_num:e {: e.generateCode(); :}
+	|
+	;
+//////////////////////////////////////
+
 
 statements ::=
 	statements statement
@@ -92,13 +107,13 @@ expr_bool_decl ::=
 	;
 
 expr_num ::=
-	expr_num:n1 PLUS expr_num:n2 {: :}
+	expr_num:n1 PLUS expr_num:n2 {: RESULT = new BinaryArithmeticOperation(n1, EnumOps.PLUS, n2); :}
 	|expr_num:n1 MINUS expr_num:n2 {: :}
 	|expr_num:n1 TIMES expr_num:n2 {: :}
 	|expr_num:n1 DIVIDE expr_num:n2 {: :}
 	|LPAR:lpar expr_num:e RPAR:rpar {: :}
-	|NUMBER:n {:  :}
-	|VAR:n1 {: :}
+	|NUMBER:n {: RESULT = new Number(n); :}
+	|VAR:n1 {: RESULT = new Variable(n1); :}
 	|var_tableau:n {: :}
 	;    
 
