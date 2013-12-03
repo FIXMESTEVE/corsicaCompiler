@@ -1,7 +1,7 @@
 public class Name implements Address{
     private String name;
     
-    Name(String n){
+    public Name(String n){
 		name = n;
     }
 

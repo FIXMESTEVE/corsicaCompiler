@@ -8,6 +8,4 @@ public class Number<T> extends ArithmeticExpression{
 	public Address generateCode(){
 		return new Constant(number);
 	}
-
-	public void generateJump(Label lol, Label lol2){}
 }

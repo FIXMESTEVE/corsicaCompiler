@@ -1,7 +1,7 @@
 public class Constant<T> implements Address{
     private T value;
 
-    Constant(T v){
+    public Constant(T v){
 		value = v;
     }
     

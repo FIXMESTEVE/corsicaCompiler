@@ -14,7 +14,7 @@ Comment   = "/*" [^*] ~"*/" | "/*" "*"+ "/"
 
 NumberReal = "-"?[[:digit:]]+(\.[[:digit:]]+)?([Ee][+-]?[[:digit:]]+)?
 NumberComplexe = {NumberReal}"+"{NumberReal}"i"
-NumberInteger = "-"?[[:digit:]]+
+NumberInteger = [[:digit:]]+
 				     
 VAR = [a-zA-Z]+[1-9]*
 NUMBER = {NumberInteger}|{NumberReal}
@@ -25,8 +25,9 @@ BOOL = ": booleen"
 				     				     			     
 				     
 %%
+
 {VAR} {return new Symbol(CompilerSymbol.VAR, yyline, yycolumn);}
-{NUMBER} {return new Symbol(CompilerSymbol.NUMBER, yyline, yycolumn);}
+      //{NumberInteger} {return new Symbol(CompilerSymbol.NUMBER, yyline, yycolumn, new Integer(yytext() ));}
 {INT} {return new Symbol(CompilerSymbol.INT, yyline, yycolumn);}
 {UINT} {return new Symbol(CompilerSymbol.UINT, yyline, yycolumn);}
 {FLOAT} {return new Symbol(CompilerSymbol.FLOAT, yyline, yycolumn);}
@@ -97,9 +98,9 @@ BOOL = ": booleen"
         Nombres
    ------------------------------------------------- */
 
-/*
-{NumberInteger}     { return new Symbol(CompilerSymbol.INTEGER, yyline, yycolumn, new Integer(yytext())); }
 
+{NumberInteger}     { return new Symbol(CompilerSymbol.NUMBER, yyline, yycolumn, new Integer(yytext())); }
+/*
 {NumberReal}     	{ return new Symbol(CompilerSymbol.REAL, yyline, yycolumn, new Float(yytext())); }
 
 {NumberComplexe}    { 
