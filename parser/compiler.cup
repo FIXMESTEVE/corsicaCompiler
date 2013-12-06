@@ -98,7 +98,6 @@ instruction ::=
 	assign:ass {: RESULT = ass; :}
 	| ifInstr:instr {: RESULT = instr; :}
 	| block:b {: RESULT = b; :}
-	//| elseInstr
 	//| whileInstr
 	;
 
@@ -108,7 +107,10 @@ assign ::=
 	;
 
 expression ::=
-	expression:expr1 PLUS expression:expr2 {: RESULT = new BinaryArithmeticOperation(expr1, EnumOps.PLUS, expr2); :}//todo: autres operators
+	expression:expr1 PLUS expression:expr2 {: RESULT = new BinaryArithmeticOperation(expr1, EnumOps.PLUS, expr2); :}
+	|expression:expr1 MINUS expression:expr2 {: RESULT = new BinaryArithmeticOperation(expr1, EnumOps.MINUS, expr2); :}
+	|expression:expr1 MULT expression:expr2 {: RESULT = new BinaryArithmeticOperation(expr1, EnumOps.TIMES, expr2); :}
+	|expression:expr1 DIV expression:expr2 {: RESULT = new BinaryArithmeticOperation(expr1, EnumOps.DIVIDE, expr2); :} //todo: unary expressions
 	| NUMBERINT:n {: RESULT = new ConstantExpression(n); :}
 	| VAR:v {: RESULT = new VariableExpression(v); :}
 	;
