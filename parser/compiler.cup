@@ -34,7 +34,7 @@ init with {:
 :};
 
 
-terminal LPAR, RPAR, LPARTAB, RPARTAB, PLUS, MINUS, TIMES, DIVIDE, MINUS_U, SEMIC, AND, OR, EQUAL, DIFF, INF, INFE, SUP, SUPE, AFFECT, TRUE, FALSE, TAB, INDTAB, MOD, NOT;
+terminal LPAR, RPAR, LPARTAB, RPARTAB, PLUS, MINUS, TIMES, DIVIDE, MINUS_U, SEMIC, AND, OR, EQUAL, DIFF, INF, INFE, SUP, SUPE, AFFECT, TRUE, FALSE, TAB, INDTAB, MOD, NOT, TYPE;
 terminal PROP, CHAINE;
 terminal String VAR;
 terminal Integer NUMBER;
@@ -43,14 +43,15 @@ terminal INT, UINT, FLOAT, BOOL, CHAR;
 non terminal statements, statement;
 
 //////////////////////FOR TESTING
-non terminal Expression expr_num2;
+non terminal Expression expr_num_test;
+non terminal Expression expr_bool_test;
 /////////////////////////////////
 non terminal Expression expr_num;
-non terminal expr_bool;
-non terminal expr_complex;
-non terminal expr_num_decl;
-non terminal expr_bool_decl;
-non terminal expr_complex_decl;
+non terminal Expression expr_bool;
+non terminal Expression expr_complex;
+non terminal Expression expr_num_decl;
+non terminal Expression expr_bool_decl;
+non terminal Expression expr_complex_decl;
 
 non terminal dim_tableau;
 non terminal var_tableau;
@@ -66,22 +67,29 @@ precedence left PLUS, MINUS;
 precedence left TIMES, DIVIDE;
 precedence left MINUS_U;
 
-//start with statements;
-start with expr_num2;
+//start with statements; //normal mode
+//start with expr_num_test; //expr_num test
+start with expr_bool_test; //expr_bool test
 
 
-////////////////////////////FOR TESTING
-expr_num2 ::=
+////////////////////////////TEST D'EXPR_NUM
+expr_num_test ::=
         expr_num:e {: e.generateCode(); :}
 	;
 //////////////////////////////////////
 
 
+////////////////////////////TEST D'EXPR_NUM
+expr_bool_test ::=
+        expr_bool:e {: e.generateCode(); :}
+	;
+//////////////////////////////////////
+
 statements ::=
 	statements statement
 	|statement;
 
-statement ::=	
+statement ::=
 	expr_num:e SEMIC {: :}
 	|expr_bool:e SEMIC {: :}
 	|expr_complex:e SEMIC {: :}
@@ -105,13 +113,16 @@ expr_bool_decl ::=
 	|VAR:p1 AFFECT expr_bool:p2 {: :}
 	;
 
+
+
+
 expr_num ::=
 	expr_num:n1 PLUS expr_num:n2 {: RESULT = new BinaryArithmeticOperation(n1, EnumOps.PLUS, n2); :}
 	|expr_num:n1 MINUS expr_num:n2 {: :}
 	|expr_num:n1 TIMES expr_num:n2 {: :}
 	|expr_num:n1 DIVIDE expr_num:n2 {: :}
-        |LPAR:lpar expr_num:e RPAR:rpar {: :}
-|NUMBER:n {: RESULT = new Nombre(n); :}
+    |LPAR:lpar expr_num:e RPAR:rpar {: :}
+	|NUMBER:n {: RESULT = new Nombre(n); :}
 	|VAR:n1 {: RESULT = new Variable(n1); :}
 	|var_tableau:n {: :}
 	;    
@@ -119,17 +130,18 @@ expr_num ::=
 expr_bool ::=
 	expr_bool:p1 AND expr_bool:p2 {: :}
 	|expr_bool:p1 OR expr_bool:p2 {:  :}
-	|expr_num:n1 EQUAL expr_num:n2 {:  :}
-	|expr_num:n1 DIFF expr_num:n2 {:  :}
+	//|expr_num:n1 EQUAL expr_num:n2 {:  :}
+	//|expr_num:n1 DIFF expr_num:n2 {:  :}
 	|expr_bool:p1 EQUAL expr_bool:p2 {:  :}
 	|expr_bool:p1 DIFF expr_bool:p2 {:  :}
-	|expr_num:n1 SUP expr_num:n2 {:  :}
-	|expr_num:n1 INF expr_num:n2 {:  :}
-	|expr_num:n1 SUPE expr_num:n2 {:  :}
-	|expr_num:n1 INFE expr_num:n2 {:  :}
-	|PROP:p {:  :} 
-	|VAR:p {: :}
-	|var_tableau:p {: :}
+	//|expr_num:n1 SUP expr_num:n2 {:  :}
+	//|expr_num:n1 INF expr_num:n2 {:  :}
+	//|expr_num:n1 SUPE expr_num:n2 {:  :}
+	//|expr_num:n1 INFE expr_num:n2 {:  :}
+	|BOOL:p {: System.out.println(p); :} 
+	//|expr_num {: :}
+	//|VAR:p {: :}
+	//|var_tableau:p {: :}
 	;
 
 

@@ -21,17 +21,19 @@ NUMBER = {NumberInteger}|{NumberReal}
 INT = ": entier" //todo: space*
 UINT = ": entierns"
 FLOAT = ": reel"
-BOOL = ": booleen"
-				     				     			     
+BOOL = ": booleen"				     			     
 				     
 %%
 
-{VAR} {return new Symbol(CompilerSymbol.VAR, yyline, yycolumn);}
-      //{NumberInteger} {return new Symbol(CompilerSymbol.NUMBER, yyline, yycolumn, new Integer(yytext() ));}
-{INT} {return new Symbol(CompilerSymbol.INT, yyline, yycolumn);}
-{UINT} {return new Symbol(CompilerSymbol.UINT, yyline, yycolumn);}
-{FLOAT} {return new Symbol(CompilerSymbol.FLOAT, yyline, yycolumn);}
-{BOOL} {return new Symbol(CompilerSymbol.BOOL, yyline, yycolumn);}
+//stuff
+{VAR} {return new Symbol(CompilerSymbol.VAR, yyline, yycolumn, new String(yytext()));}
+{NumberInteger}     { return new Symbol(CompilerSymbol.NUMBER, yyline, yycolumn, new Integer(yytext())); }
+
+//types
+{INT} {return new Symbol(CompilerSymbol.TYPE, yyline, yycolumn, EnumType.INTEGER);}
+{UINT} {return new Symbol(CompilerSymbol.TYPE, yyline, yycolumn, EnumType.UNSIGNED_INT);}
+{FLOAT} {return new Symbol(CompilerSymbol.TYPE, yyline, yycolumn, EnumType.FLOAT);}
+{BOOL} {return new Symbol(CompilerSymbol.TYPE, yyline, yycolumn, EnumType.BOOLEAN);}
 
 "+"     { return new Symbol(CompilerSymbol.PLUS, yyline, yycolumn); }
 "-"     { return new Symbol(CompilerSymbol.MINUS, yyline, yycolumn); }
@@ -39,8 +41,8 @@ BOOL = ": booleen"
 "/"     { return new Symbol(CompilerSymbol.DIVIDE, yyline, yycolumn); }
 "("     { return new Symbol(CompilerSymbol.LPAR, yyline, yycolumn); }
 ")"     { return new Symbol(CompilerSymbol.RPAR, yyline, yycolumn); }
-"vrai"  { return new Symbol(CompilerSymbol.TRUE, yyline, yytext()); }
-"faux"  { return new Symbol(CompilerSymbol.FALSE, yyline, yytext()); }
+"vrai"  { return new Symbol(CompilerSymbol.BOOL, yyline, yytext()); }
+"faux"  { return new Symbol(CompilerSymbol.BOOL, yyline, yytext()); }
 "%"     { return new Symbol(CompilerSymbol.MOD, yyline, yycolumn); }
 "=="    { return new Symbol(CompilerSymbol.EQUAL, yyline, yycolumn); }
 "!="    { return new Symbol(CompilerSymbol.DIFF, yyline, yycolumn); }
@@ -99,7 +101,7 @@ BOOL = ": booleen"
    ------------------------------------------------- */
 
 
-{NumberInteger}     { return new Symbol(CompilerSymbol.NUMBER, yyline, yycolumn, new Integer(yytext())); }
+
 /*
 {NumberReal}     	{ return new Symbol(CompilerSymbol.REAL, yyline, yycolumn, new Float(yytext())); }
 
