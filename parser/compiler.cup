@@ -41,6 +41,7 @@ terminal Integer NUMBERINT;
 terminal INT, UINT, FLOAT, BOOL, CHAR;
 terminal ASSIGN;
 terminal IF;
+terminal ELSE;
 terminal LBRACKET;
 terminal RBRACKET;
 
@@ -82,6 +83,8 @@ precedence left PLUS, MINUS;
 precedence left TIMES, DIVIDE;
 precedence left MINUS_U;
 
+precedence right ELSE;
+
 start with flow;
 
 flow ::=
@@ -120,10 +123,9 @@ subFlow ::=
 	;
 
 	
-
 ifInstr ::=
-	//IF LPAR expression:cond RPAR LBRACKET code:c RBRACKET {: RESULT = new If(cond, c);:}
 	IF LPAR expression:cond RPAR instruction:instr {: RESULT = new If(cond, instr); :}
+	|IF LPAR expression:cond RPAR instruction:ifInstr ELSE instruction:elseInstr {: RESULT = new Else(cond, ifInstr, elseInstr); :}
 	;
 
 

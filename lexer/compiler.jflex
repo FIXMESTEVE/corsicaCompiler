@@ -50,6 +50,7 @@ INT = ": entier" //todo: space*
 ";"   { return new Symbol(CompilerSymbol.SEMIC, yyline, yycolumn); }
 ":=" { return new Symbol(CompilerSymbol.ASSIGN, yyline, yycolumn); }
 "if" {return new Symbol(CompilerSymbol.IF, yyline, yycolumn); }
+"else" {return new Symbol(CompilerSymbol.ELSE, yyline, yycolumn); }
 "{" { return new Symbol(CompilerSymbol.LBRACKET, yyline, yycolumn);}
 "}" { return new Symbol(CompilerSymbol.RBRACKET, yyline, yycolumn);}
 //"[" {}

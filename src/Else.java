@@ -13,6 +13,7 @@ public class Else implements Instruction{
 		Label lthen = new Label();
 		Label lelse = new Label();
 		condition.generateJump(lthen, lelse);
+		System.out.println(lthen.print() + ":");
 		thenCode.generateCode(nextLabel);
 		System.out.println("goto " + nextLabel.print());
 		System.out.println(lelse.print() + ":");
