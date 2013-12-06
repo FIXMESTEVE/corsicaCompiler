@@ -23,10 +23,6 @@ INT = ": entier" //todo: space*
 				     
 %%
 
-//stuff
-{VAR} {return new Symbol(CompilerSymbol.VAR, yyline, yycolumn, new String(yytext()));}
-{NumberInteger}     { return new Symbol(CompilerSymbol.NUMBERINT, yyline, yycolumn, new Integer(yytext())); }
-
 //types
 {INT} {return new Symbol(CompilerSymbol.TYPE, yyline, yycolumn, EnumType.INTEGER);}
 //{UINT} {return new Symbol(CompilerSymbol.TYPE, yyline, yycolumn, EnumType.UNSIGNED_INT);}
@@ -39,8 +35,8 @@ INT = ": entier" //todo: space*
 "/"     { return new Symbol(CompilerSymbol.DIVIDE, yyline, yycolumn); }
 "("     { return new Symbol(CompilerSymbol.LPAR, yyline, yycolumn); }
 ")"     { return new Symbol(CompilerSymbol.RPAR, yyline, yycolumn); }
-"vrai"  { return new Symbol(CompilerSymbol.BOOL, yyline, yytext()); }
-"faux"  { return new Symbol(CompilerSymbol.BOOL, yyline, yytext()); }
+//"vrai"  { return new Symbol(CompilerSymbol.BOOL, yyline, yytext()); }
+//"faux"  { return new Symbol(CompilerSymbol.BOOL, yyline, yytext()); }
 "%"     { return new Symbol(CompilerSymbol.MOD, yyline, yycolumn); }
 "=="    { return new Symbol(CompilerSymbol.EQUAL, yyline, yycolumn); }
 "!="    { return new Symbol(CompilerSymbol.DIFF, yyline, yycolumn); }
@@ -53,9 +49,16 @@ INT = ": entier" //todo: space*
 "!"     { return new Symbol(CompilerSymbol.NOT, yyline, yycolumn); }
 ";"   { return new Symbol(CompilerSymbol.SEMIC, yyline, yycolumn); }
 ":=" { return new Symbol(CompilerSymbol.ASSIGN, yyline, yycolumn); }
+"if" {return new Symbol(CompilerSymbol.IF, yyline, yycolumn); }
+"{" { return new Symbol(CompilerSymbol.LBRACKET, yyline, yycolumn);}
+"}" { return new Symbol(CompilerSymbol.RBRACKET, yyline, yycolumn);}
 //"[" {}
 //"]" {}
 //","     {return new Symbol(CompilerSymbol.COMA, yyline, yycolumn);}
+
+//stuff
+{VAR} {return new Symbol(CompilerSymbol.VAR, yyline, yycolumn, new String(yytext()));}
+{NumberInteger}     { return new Symbol(CompilerSymbol.NUMBERINT, yyline, yycolumn, new Integer(yytext())); }
 
 /* -------------------------------------------------
         Commentaires - Caracteres non pris en compte

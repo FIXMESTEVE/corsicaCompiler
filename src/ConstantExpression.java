@@ -1,6 +1,6 @@
-public class ConstantExpression extends ArithmeticExpression{
-	private final float value;
+public class ConstantExpression<T> extends ArithmeticExpression{
+	private final T value;
 
-	public ConstantExpression(float val){value=val;}
+	public ConstantExpression(T val){value=val;}
 	public Address generateCode(){ return new Constant(value);}
 }

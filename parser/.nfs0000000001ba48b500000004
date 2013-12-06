@@ -4,7 +4,7 @@
 
 import java_cup.runtime.*;
 import java.lang.Number;
-import java.util.*;
+
 
 
 action code {:
@@ -40,9 +40,6 @@ terminal String VAR;
 terminal Integer NUMBERINT;
 terminal INT, UINT, FLOAT, BOOL, CHAR;
 terminal ASSIGN;
-terminal IF;
-terminal LBRACKET;
-terminal RBRACKET;
 
 
 /* OLD STUFF
@@ -69,9 +66,6 @@ non terminal chaine;
 non terminal flow;
 non terminal Instruction instruction;
 non terminal Instruction assign;
-non terminal Instruction ifInstr;
-non terminal Instruction block;
-non terminal Vector<Instruction> subFlow;
 non terminal Expression expression;
 
 precedence left OR;
@@ -85,23 +79,17 @@ precedence left MINUS_U;
 start with flow;
 
 flow ::=
-	flow instruction:instr {: 	Label nextLabel = new Label();
-								instr.generateCode(nextLabel);
-								System.out.println(nextLabel.print() + ":"); :}
+	flow instruction:instr {: instr.generateCode(new Label()); :}
 	|
 	;
 
 instruction ::=
 	assign:ass {: RESULT = ass; :}
-	| ifInstr:instr {: RESULT = instr; :}
-	| block:b {: RESULT = b; :}
-	//| elseInstr
-	//| whileInstr
 	;
 
 assign ::=
-	VAR:var TYPE ASSIGN expression:expr SEMIC {: RESULT = new Assign(var, expr); :}
-	|VAR:var ASSIGN expression:expr SEMIC {: RESULT = new Assign(var, expr); :}
+	//TYPE VAR:var ASSIGN expression:expr SEMIC {: RESULT = new Assign(var, expr); :}
+	VAR:var ASSIGN expression:expr SEMIC {: RESULT = new Assign(var, expr); :}
 	;
 
 expression ::=
@@ -110,21 +98,9 @@ expression ::=
 	| VAR:v {: RESULT = new VariableExpression(v); :}
 	;
 
-block ::= 
-	LBRACKET subFlow:f RBRACKET {: RESULT = new BlockInstruction(f); :}
-	;
 
-subFlow ::=
-	subFlow:vectorInstr instruction:instr {: vectorInstr.add(instr); RESULT = vectorInstr; :}
-	| {: Vector<Instruction> vectorInstr = new Vector<Instruction>(); RESULT = vectorInstr; :}
-	;
 
-	
 
-ifInstr ::=
-	//IF LPAR expression:cond RPAR LBRACKET code:c RBRACKET {: RESULT = new If(cond, c);:}
-	IF LPAR expression:cond RPAR instruction:instr {: RESULT = new If(cond, instr); :}
-	;
 
 
 
