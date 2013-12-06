@@ -11,8 +11,8 @@ public class While implements Instruction{
 		Label topLabel = new Label();
 		Label codeLabel = new Label();
 		System.out.println(topLabel.print() + ":");
-		condition.generateJump(codeLabel, next);
-		System.out.println(bodyLabel.print() + ":");
+		condition.generateJump(codeLabel, nextLabel);
+		System.out.println(codeLabel.print() + ":");
 		code.generateCode(topLabel);
 		System.out.println("goto " + topLabel.print());
 	}

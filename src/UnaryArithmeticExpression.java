@@ -8,8 +8,8 @@ public class UnaryArithmeticExpression extends ArithmeticExpression{
 	}
 
 	public Address generateCode(){
-		Address op = expr->generateCode();
-		Address result = new Temporary;
+		Address op = expr.generateCode();
+		Address result = new Temporary();
 		System.out.println(result.print() + " = " + op.print());
 		return result;
 	}

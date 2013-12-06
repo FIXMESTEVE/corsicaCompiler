@@ -3,7 +3,7 @@ public class Else implements Instruction{
 	Instruction thenCode;
 	Instruction elseCode;
 
-	public Else(Expression cond, Intstruction t, Instruction e ){
+	public Else(Expression cond, Instruction t, Instruction e ){
 		condition = cond;
 		thenCode = t;
 		elseCode = e;

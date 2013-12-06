@@ -37,9 +37,12 @@ init with {:
 terminal LPAR, RPAR, LPARTAB, RPARTAB, PLUS, MINUS, TIMES, DIVIDE, MINUS_U, SEMIC, AND, OR, EQUAL, DIFF, INF, INFE, SUP, SUPE, AFFECT, TRUE, FALSE, TAB, INDTAB, MOD, NOT, TYPE;
 terminal PROP, CHAINE;
 terminal String VAR;
-terminal Integer NUMBER;
+terminal Integer NUMBERINT;
 terminal INT, UINT, FLOAT, BOOL, CHAR;
+terminal ASSIGN;
 
+
+/* OLD STUFF
 non terminal statements, statement;
 
 //////////////////////FOR TESTING
@@ -58,6 +61,12 @@ non terminal var_tableau;
 non terminal indtab;
 
 non terminal chaine;
+*/
+
+non terminal flow;
+non terminal Instruction instruction;
+non terminal Instruction assign;
+non terminal Expression expression;
 
 precedence left OR;
 precedence left AND;
@@ -67,6 +76,57 @@ precedence left PLUS, MINUS;
 precedence left TIMES, DIVIDE;
 precedence left MINUS_U;
 
+start with flow;
+
+flow ::=
+	flow instruction:instr {: instr.generateCode(new Label()); :}
+	|
+	;
+
+instruction ::=
+	assign:ass {: RESULT = ass; :}
+	;
+
+assign ::=
+	//TYPE VAR:var ASSIGN expression:expr SEMIC {: RESULT = new Assign(var, expr); :}
+	VAR:var ASSIGN expression:expr SEMIC {: RESULT = new Assign(var, expr); :}
+	;
+
+expression ::=
+	expression:expr1 PLUS expression:expr2 {: RESULT = new BinaryArithmeticOperation(expr1, EnumOps.PLUS, expr2); :}//todo: autres operators
+	| NUMBERINT:n {: RESULT = new ConstantExpression(n); :}
+	| VAR:v {: RESULT = new VariableExpression(v); :}
+	;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
 //start with statements; //normal mode
 //start with expr_num_test; //expr_num test
 start with expr_bool_test; //expr_bool test
@@ -150,7 +210,7 @@ dim_tableau ::=
 	|indtab:t {: :}
 	;
 
-indtab ::=                                 /* INDTAB = "[i]" dans "tab[i]" */
+indtab ::=                                 // INDTAB = "[i]" dans "tab[i]" 
 	LPARTAB NUMBER:i RPARTAB {: :}
 	|LPARTAB VAR:i RPARTAB {: :}
 	;
@@ -167,10 +227,10 @@ expr_complex_decl ::=
 	|VAR:c1 TAB dim_tableau {:  :}
 	|VAR:c1 INDTAB:c2 AFFECT expr_num:c3 {: :}
 	|VAR:c1 INDTAB:c2 AFFECT expr_bool:c3 {: :}
-	|VAR:c1 INDTAB:c2 AFFECT VAR:c3 {: :}   /* On suppose que l'on peut ainsi déclarer des tableaux de tableaux */
+	|VAR:c1 INDTAB:c2 AFFECT VAR:c3 {: :}   // On suppose que l'on peut ainsi déclarer des tableaux de tableaux
 	|VAR:c1 AFFECT CHAINE:c2 {: :}
 	;
 	
-	
+	*/
 
 
