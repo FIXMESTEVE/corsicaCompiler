@@ -113,10 +113,13 @@ expression ::=
 	|expression:expr1 MINUS expression:expr2 {: RESULT = new BinaryArithmeticOperation(expr1, EnumOps.MINUS, expr2); :}
 	|expression:expr1 MULT expression:expr2 {: RESULT = new BinaryArithmeticOperation(expr1, EnumOps.MULT, expr2); :}
 	|expression:expr1 DIV expression:expr2 {: RESULT = new BinaryArithmeticOperation(expr1, EnumOps.DIV, expr2); :} //todo: unary expressions
-	|NOT expression:expr1 {: RESULT = new UnaryArithmeticExpression(EnumOps.NOT,expr1); :}
-	|MINUS expression:expr1 {: RESULT = new UnaryArithmeticExpression(EnumOps.MINUS,expr1); :} %prec MINUS_U 
+	|expression:expr1 AND expression:expr2 {: RESULT = new And(expr1, expr2); :}
+	|expression:expr1 OR expression:expr2 {: RESULT = new Or(expr1, expr2); :}
+	|NOT expression:expr1 {: RESULT = new UnaryArithmeticExpression(EnumOps.NOT, expr1); :}
+	|MINUS expression:expr1 {: RESULT = new UnaryArithmeticExpression(EnumOps.MINUS, expr1); :} 
  	|NUMBERINT:n {: RESULT = new ConstantExpression(n); :}
 	|VAR:v {: RESULT = new VariableExpression(v); :}
+	|BOOL:b {: RESULT = new ConstantExpression(b); :}
 	;
 
 block ::= 

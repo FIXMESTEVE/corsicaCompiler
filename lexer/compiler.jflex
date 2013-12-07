@@ -35,8 +35,8 @@ INT = ": entier" //todo: space*
 "/"     { return new Symbol(CompilerSymbol.DIV, yyline, yycolumn); }
 "("     { return new Symbol(CompilerSymbol.LPAR, yyline, yycolumn); }
 ")"     { return new Symbol(CompilerSymbol.RPAR, yyline, yycolumn); }
-//"vrai"  { return new Symbol(CompilerSymbol.BOOL, yyline, yytext()); }
-//"faux"  { return new Symbol(CompilerSymbol.BOOL, yyline, yytext()); }
+"vrai"  { return new Symbol(CompilerSymbol.BOOL, yyline, yycolumn, yytext()); }
+"faux"  { return new Symbol(CompilerSymbol.BOOL, yyline, yycolumn, yytext()); }
 "%"     { return new Symbol(CompilerSymbol.MOD, yyline, yycolumn); }
 "=="    { return new Symbol(CompilerSymbol.EQUAL, yyline, yycolumn); }
 "!="    { return new Symbol(CompilerSymbol.DIFF, yyline, yycolumn); }
