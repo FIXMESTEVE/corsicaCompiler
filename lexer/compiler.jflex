@@ -31,8 +31,8 @@ INT = ": entier" //todo: space*
 
 "+"     { return new Symbol(CompilerSymbol.PLUS, yyline, yycolumn); }
 "-"     { return new Symbol(CompilerSymbol.MINUS, yyline, yycolumn); }
-"*"     { return new Symbol(CompilerSymbol.TIMES, yyline, yycolumn); }
-"/"     { return new Symbol(CompilerSymbol.DIVIDE, yyline, yycolumn); }
+"*"     { return new Symbol(CompilerSymbol.MULT, yyline, yycolumn); }
+"/"     { return new Symbol(CompilerSymbol.DIV, yyline, yycolumn); }
 "("     { return new Symbol(CompilerSymbol.LPAR, yyline, yycolumn); }
 ")"     { return new Symbol(CompilerSymbol.RPAR, yyline, yycolumn); }
 //"vrai"  { return new Symbol(CompilerSymbol.BOOL, yyline, yytext()); }
@@ -50,6 +50,7 @@ INT = ": entier" //todo: space*
 ";"   { return new Symbol(CompilerSymbol.SEMIC, yyline, yycolumn); }
 ":=" { return new Symbol(CompilerSymbol.ASSIGN, yyline, yycolumn); }
 "if" {return new Symbol(CompilerSymbol.IF, yyline, yycolumn); }
+"while" {return new Symbol(CompilerSymbol.WHILE, yyline, yycolumn); }
 "else" {return new Symbol(CompilerSymbol.ELSE, yyline, yycolumn); }
 "{" { return new Symbol(CompilerSymbol.LBRACKET, yyline, yycolumn);}
 "}" { return new Symbol(CompilerSymbol.RBRACKET, yyline, yycolumn);}

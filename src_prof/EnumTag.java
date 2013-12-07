@@ -1,7 +1,5 @@
-public enum EnumOps{ 
+public enum EnumTag { 
     
-    /*THESE ARE NOT OPERATORS
-
     QUEST ("?"),
     COLON (":"),
     INTEGER ("int"),
@@ -22,22 +20,21 @@ public enum EnumOps{
 	LE ("<="), 
 	GE (">="), 
 	EQ ("=="), 
-	DIFF ("!="),*/ 
+	DIFF ("!="), 
 	PLUS ("+"), 
 	MINUS ("-"), 
-	NOT ("!"),
-    MULT ("*"), 
+	MINUS_U ("-"), 
+	MULT ("*"), 
 	DIV ("/");
+    
+    private final String tag;
 
-
-    private final String op;
-
-    EnumOps(String s){
-		op = s;
+    EnumTag(String s){
+		tag = s;
     }
     
     public String toString(){
-		return op;
+		return tag;
     }
     
 }

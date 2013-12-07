@@ -34,13 +34,13 @@ init with {:
 :};
 
 
-terminal LPAR, RPAR, LPARTAB, RPARTAB, PLUS, MINUS, MULT, DIV, MINUS_U, SEMIC, AND, OR, EQUAL, DIFF, INF, INFE, SUP, SUPE, AFFECT, TRUE, FALSE, TAB, INDTAB, MOD, NOT, TYPE;
+terminal LPAR, RPAR, LPARTAB, RPARTAB, PLUS, MINUS, TIMES, DIVIDE, MINUS_U, SEMIC, AND, OR, EQUAL, DIFF, INF, INFE, SUP, SUPE, AFFECT, TRUE, FALSE, TAB, INDTAB, MOD, NOT, TYPE;
 terminal PROP, CHAINE;
 terminal String VAR;
 terminal Integer NUMBERINT;
 terminal INT, UINT, FLOAT, BOOL, CHAR;
 terminal ASSIGN;
-terminal IF, WHILE;
+terminal IF;
 terminal ELSE;
 terminal LBRACKET;
 terminal RBRACKET;
@@ -71,7 +71,6 @@ non terminal flow;
 non terminal Instruction instruction;
 non terminal Instruction assign;
 non terminal Instruction ifInstr;
-non terminal Instruction whileInstr;
 non terminal Instruction block;
 non terminal Vector<Instruction> subFlow;
 non terminal Expression expression;
@@ -81,7 +80,7 @@ precedence left AND;
 precedence left EQUAL, DIFF;
 precedence left INF, SUP, INFE, SUPE;
 precedence left PLUS, MINUS;
-precedence left MULT, DIV;
+precedence left TIMES, DIVIDE;
 precedence left MINUS_U;
 
 precedence right ELSE;
@@ -98,7 +97,6 @@ flow ::=
 instruction ::=
 	assign:ass {: RESULT = ass; :}
 	| ifInstr:instr {: RESULT = instr; :}
-	| whileInstr:instr {: RESULT = instr; :}
 	| block:b {: RESULT = b; :}
 	//| whileInstr
 	;
@@ -111,12 +109,10 @@ assign ::=
 expression ::=
 	expression:expr1 PLUS expression:expr2 {: RESULT = new BinaryArithmeticOperation(expr1, EnumOps.PLUS, expr2); :}
 	|expression:expr1 MINUS expression:expr2 {: RESULT = new BinaryArithmeticOperation(expr1, EnumOps.MINUS, expr2); :}
-	|expression:expr1 MULT expression:expr2 {: RESULT = new BinaryArithmeticOperation(expr1, EnumOps.MULT, expr2); :}
-	|expression:expr1 DIV expression:expr2 {: RESULT = new BinaryArithmeticOperation(expr1, EnumOps.DIV, expr2); :} //todo: unary expressions
-	|NOT expression:expr1 {: RESULT = new UnaryArithmeticExpression(EnumOps.NOT,expr1); :}
-	|MINUS expression:expr1 {: RESULT = new UnaryArithmeticExpression(EnumOps.MINUS,expr1); :} %prec MINUS_U 
- 	|NUMBERINT:n {: RESULT = new ConstantExpression(n); :}
-	|VAR:v {: RESULT = new VariableExpression(v); :}
+	|expression:expr1 MULT expression:expr2 {: RESULT = new BinaryArithmeticOperation(expr1, EnumOps.TIMES, expr2); :}
+	|expression:expr1 DIV expression:expr2 {: RESULT = new BinaryArithmeticOperation(expr1, EnumOps.DIVIDE, expr2); :} //todo: unary expressions
+	| NUMBERINT:n {: RESULT = new ConstantExpression(n); :}
+	| VAR:v {: RESULT = new VariableExpression(v); :}
 	;
 
 block ::= 
@@ -128,16 +124,31 @@ subFlow ::=
 	| {: Vector<Instruction> vectorInstr = new Vector<Instruction>(); RESULT = vectorInstr; :}
 	;
 
-
-whileInstr ::=
-	WHILE LPAR expression:cond RPAR instruction:instr {: RESULT = new While(cond,instr); :}
-	;
-
-
+	
 ifInstr ::=
 	IF LPAR expression:cond RPAR instruction:instr {: RESULT = new If(cond, instr); :}
 	|IF LPAR expression:cond RPAR instruction:ifInstr ELSE instruction:elseInstr {: RESULT = new Else(cond, ifInstr, elseInstr); :}
 	;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

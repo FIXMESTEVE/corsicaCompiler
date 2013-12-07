@@ -113,10 +113,8 @@ expression ::=
 	|expression:expr1 MINUS expression:expr2 {: RESULT = new BinaryArithmeticOperation(expr1, EnumOps.MINUS, expr2); :}
 	|expression:expr1 MULT expression:expr2 {: RESULT = new BinaryArithmeticOperation(expr1, EnumOps.MULT, expr2); :}
 	|expression:expr1 DIV expression:expr2 {: RESULT = new BinaryArithmeticOperation(expr1, EnumOps.DIV, expr2); :} //todo: unary expressions
-	|NOT expression:expr1 {: RESULT = new UnaryArithmeticExpression(EnumOps.NOT,expr1); :}
-	|MINUS expression:expr1 {: RESULT = new UnaryArithmeticExpression(EnumOps.MINUS,expr1); :} %prec MINUS_U 
- 	|NUMBERINT:n {: RESULT = new ConstantExpression(n); :}
-	|VAR:v {: RESULT = new VariableExpression(v); :}
+	| NUMBERINT:n {: RESULT = new ConstantExpression(n); :}
+	| VAR:v {: RESULT = new VariableExpression(v); :}
 	;
 
 block ::= 
@@ -127,12 +125,6 @@ subFlow ::=
 	subFlow:vectorInstr instruction:instr {: vectorInstr.add(instr); RESULT = vectorInstr; :}
 	| {: Vector<Instruction> vectorInstr = new Vector<Instruction>(); RESULT = vectorInstr; :}
 	;
-
-
-whileInstr ::=
-	WHILE LPAR expression:cond RPAR instruction:instr {: RESULT = new While(cond,instr); :}
-	;
-
 
 ifInstr ::=
 	IF LPAR expression:cond RPAR instruction:instr {: RESULT = new If(cond, instr); :}
