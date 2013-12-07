@@ -10,8 +10,8 @@ public class Comparison extends BooleanExpression{
 	}
 
 	public void generateJump(Label yes, Label no){
-		Address lRes = leftExpr->generateCode();
-		Address rRes = rightExpr->generateCode();
+		Address lRes = leftExpr.generateCode();
+		Address rRes = rightExpr.generateCode();
 
 		System.out.println("if " + lRes.print() + " " + operator + " " + rRes.print() + " goto " + yes.print());
 		System.out.println("goto " + no.print());

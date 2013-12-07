@@ -10,6 +10,6 @@ public class And extends BooleanExpression{
 		Label lRight = new Label();
 		leftExpr.generateJump(lRight, no);
 		System.out.println(lRight.print() + ":");
-		rightExpr->generateJump(yes, no);
+		rightExpr.generateJump(yes, no);
 	}
 }
