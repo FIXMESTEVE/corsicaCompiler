@@ -1,16 +1,16 @@
 public class UnaryArithmeticExpression extends ArithmeticExpression{
-	private EnumOps op;
-	private Expression expr;
+	private EnumOps operator;
+	private Expression soleExpr;
 
 	public UnaryArithmeticExpression(EnumOps o, Expression e){
-		op = o;
-		expr = e;
+		operator = o;
+		soleExpr = e;
 	}
 
 	public Address generateCode(){
-		Address op = expr.generateCode();
+		Address resSoleExpr = soleExpr.generateCode();
 		Address result = new Temporary();
-		System.out.println(result.print() + " = " + op.print());
+		System.out.println(result.print() + " = " + operator + resSoleExpr.print());
 		return result;
 	}
 }

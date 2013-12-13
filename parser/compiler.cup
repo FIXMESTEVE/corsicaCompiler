@@ -12,6 +12,9 @@ action code {:
          System.out.println("--- Error ---" );
          System.out.println("Ligne " +ligne+ " -- Colonne " +colonne);
     }
+
+    HashMap<String,String> varTab = new HashMap<String,String>();
+    Stack<HashMap> stack = new Stack<HashMap>();
 :};
 
 parser code {:
@@ -90,17 +93,22 @@ start with flow;
 
 flow ::=
 	flow instruction:instr {: 	Label nextLabel = new Label();
-								instr.generateCode(nextLabel);
+								instr.generateCode(nextLabel, stack);
 								System.out.println(nextLabel.print() + ":"); :}
-	|
+	|	{: stack.push(varTab); :}
 	;
 
 instruction ::=
-	assign:ass {: RESULT = ass; :}
+	assign:a {: RESULT = a; :}
 	| ifInstr:instr {: RESULT = instr; :}
 	| whileInstr:instr {: RESULT = instr; :}
 	| block:b {: RESULT = b; :}
+	| declaration:d {: :}
 	//| whileInstr
+	;
+
+declaration ::=
+	VAR:var TYPE {: :}
 	;
 
 assign ::=
@@ -112,7 +120,7 @@ expression ::=
 	expression:expr1 PLUS expression:expr2 {: RESULT = new BinaryArithmeticOperation(expr1, EnumOps.PLUS, expr2); :}
 	|expression:expr1 MINUS expression:expr2 {: RESULT = new BinaryArithmeticOperation(expr1, EnumOps.MINUS, expr2); :}
 	|expression:expr1 MULT expression:expr2 {: RESULT = new BinaryArithmeticOperation(expr1, EnumOps.MULT, expr2); :}
-	|expression:expr1 DIV expression:expr2 {: RESULT = new BinaryArithmeticOperation(expr1, EnumOps.DIV, expr2); :} //todo: unary expressions
+	|expression:expr1 DIV expression:expr2 {: RESULT = new BinaryArithmeticOperation(expr1, EnumOps.DIV, expr2); :}
 	|expression:expr1 AND expression:expr2 {: RESULT = new And(expr1, expr2); :}
 	|expression:expr1 OR expression:expr2 {: RESULT = new Or(expr1, expr2); :}
 	|NOT expression:expr1 {: RESULT = new UnaryArithmeticExpression(EnumOps.NOT, expr1); :}
