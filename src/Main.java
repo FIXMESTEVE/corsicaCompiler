@@ -16,6 +16,7 @@ public class Main {
                         }
                         catch (Exception e) {
                                 System.out.println("parse error");
+                                e.printStackTrace(System.out);
                         }
                 }
                 catch (Exception e){

@@ -1,6 +1,5 @@
 public enum EnumOps{ 
     
-    /*THESE ARE NOT OPERATORS
 
     QUEST ("?"),
     COLON (":"),
@@ -22,10 +21,9 @@ public enum EnumOps{
 	LE ("<="), 
 	GE (">="), 
 	EQ ("=="), 
-	DIFF ("!="),*/ 
+	DIFF ("!="),
 	PLUS ("+"), 
 	MINUS ("-"), 
-	NOT ("!"),
     MULT ("*"), 
 	DIV ("/");
 

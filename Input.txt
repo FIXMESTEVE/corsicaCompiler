@@ -1,2 +1,2 @@
-a1 := !vrai;
-a2 := a1;
+int tab[5];
+tab[1] = 2;

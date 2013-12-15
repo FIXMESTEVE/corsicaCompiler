@@ -13,7 +13,7 @@ action code {:
          System.out.println("Ligne " +ligne+ " -- Colonne " +colonne);
     }
 
-    HashMap<String,String> varTab = new HashMap<String,String>();
+    HashMap<String,EnumType> varTab = new HashMap<String,EnumType>();
     Stack<HashMap> stack = new Stack<HashMap>();
 :};
 
@@ -37,10 +37,12 @@ init with {:
 :};
 
 
-terminal LPAR, RPAR, LPARTAB, RPARTAB, PLUS, MINUS, MULT, DIV, MINUS_U, SEMIC, AND, OR, EQUAL, DIFF, INF, INFE, SUP, SUPE, AFFECT, TRUE, FALSE, TAB, INDTAB, MOD, NOT, TYPE;
+terminal LPAR, RPAR, LPARTAB, RPARTAB, PLUS, MINUS, MULT, DIV, MINUS_U, SEMIC, AND, OR, EQUAL, DIFF, INF, INFE, SUP, SUPE, AFFECT, TRUE, FALSE, TAB, INDTAB, MOD, NOT, COLON, LSQUAREBRACKET, RSQUAREBRACKET;
 terminal PROP, CHAINE;
+terminal EnumType TYPE;
 terminal String VAR;
 terminal Integer NUMBERINT;
+terminal Float NUMBERFLOAT;
 terminal INT, UINT, FLOAT, BOOL, CHAR;
 terminal ASSIGN;
 terminal IF, WHILE;
@@ -49,26 +51,6 @@ terminal LBRACKET;
 terminal RBRACKET;
 
 
-/* OLD STUFF
-non terminal statements, statement;
-
-//////////////////////FOR TESTING
-non terminal Expression expr_num_test;
-non terminal Expression expr_bool_test;
-/////////////////////////////////
-non terminal Expression expr_num;
-non terminal Expression expr_bool;
-non terminal Expression expr_complex;
-non terminal Expression expr_num_decl;
-non terminal Expression expr_bool_decl;
-non terminal Expression expr_complex_decl;
-
-non terminal dim_tableau;
-non terminal var_tableau;
-non terminal indtab;
-
-non terminal chaine;
-*/
 
 non terminal flow;
 non terminal Instruction instruction;
@@ -76,7 +58,9 @@ non terminal Instruction assign;
 non terminal Instruction ifInstr;
 non terminal Instruction whileInstr;
 non terminal Instruction block;
+non terminal declaration;
 non terminal Vector<Instruction> subFlow;
+non terminal Vector<Expression> array;
 non terminal Expression expression;
 
 precedence left OR;
@@ -92,10 +76,12 @@ precedence right ELSE;
 start with flow;
 
 flow ::=
-	flow instruction:instr {: 	Label nextLabel = new Label();
-								instr.generateCode(nextLabel, stack);
-								System.out.println(nextLabel.print() + ":"); :}
-	|	{: stack.push(varTab); :}
+	flow instruction:instr {: 	if(instr != null){
+									Label nextLabel = new Label();
+									instr.generateCode(nextLabel);//, stack);
+									System.out.println(nextLabel.print() + ":"); 
+								} :}
+	|						{: stack.push(varTab); :}
 	;
 
 instruction ::=
@@ -103,32 +89,44 @@ instruction ::=
 	| ifInstr:instr {: RESULT = instr; :}
 	| whileInstr:instr {: RESULT = instr; :}
 	| block:b {: RESULT = b; :}
-	| declaration:d {: :}
-	//| whileInstr
+	| declaration:d {: RESULT = null; :}
 	;
 
 declaration ::=
-	VAR:var TYPE {: :}
+	TYPE:type VAR:var SEMIC {: RESULT = null; varTab.put(var, type); :}
+	|TYPE:type VAR:var array SEMIC {: RESULT = null; varTab.put(var, type); :}
 	;
-
 assign ::=
-	VAR:var TYPE ASSIGN expression:expr SEMIC {: RESULT = new Assign(var, expr); :}
+	TYPE:type VAR:var ASSIGN expression:expr SEMIC {: RESULT = new Assign(var, expr); varTab.put(var, type); :}
 	|VAR:var ASSIGN expression:expr SEMIC {: RESULT = new Assign(var, expr); :}
+	|TYPE:type VAR:var LSQUAREBRACKET expression:i RSQUAREBRACKET ASSIGN expression:expr SEMIC {: RESULT = new Assign(var, i, expr); varTab.put(var, type); :}
+	|VAR:var LSQUAREBRACKET expression:i RSQUAREBRACKET ASSIGN expression:expr SEMIC {: RESULT = new Assign(var, i, expr); :}
 	;
 
 expression ::=
-	expression:expr1 PLUS expression:expr2 {: RESULT = new BinaryArithmeticOperation(expr1, EnumOps.PLUS, expr2); :}
+	expression:expr1 EQUAL expression:expr2 {: RESULT = new Comparison(expr1, EnumOps.EQ, expr2); :}
+	|expression:expr1 DIFF expression:expr2 {: RESULT = new Comparison(expr1, EnumOps.DIFF, expr2); :}
+	|expression:expr1 INF expression:expr2 {: RESULT = new Comparison(expr1, EnumOps.LT, expr2); :}
+	|expression:expr1 INFE expression:expr2 {: RESULT = new Comparison(expr1, EnumOps.LE, expr2); :}
+	|expression:expr1 SUP expression:expr2 {: RESULT = new Comparison(expr1, EnumOps.GT, expr2); :}
+	|expression:expr1 SUPE expression:expr2 {: RESULT = new Comparison(expr1, EnumOps.GE, expr2); :}
+	|expression:expr1 PLUS expression:expr2 {: RESULT = new BinaryArithmeticOperation(expr1, EnumOps.PLUS, expr2); :}
 	|expression:expr1 MINUS expression:expr2 {: RESULT = new BinaryArithmeticOperation(expr1, EnumOps.MINUS, expr2); :}
 	|expression:expr1 MULT expression:expr2 {: RESULT = new BinaryArithmeticOperation(expr1, EnumOps.MULT, expr2); :}
 	|expression:expr1 DIV expression:expr2 {: RESULT = new BinaryArithmeticOperation(expr1, EnumOps.DIV, expr2); :}
 	|expression:expr1 AND expression:expr2 {: RESULT = new And(expr1, expr2); :}
 	|expression:expr1 OR expression:expr2 {: RESULT = new Or(expr1, expr2); :}
 	|NOT expression:expr1 {: RESULT = new UnaryArithmeticExpression(EnumOps.NOT, expr1); :}
-	|MINUS expression:expr1 {: RESULT = new UnaryArithmeticExpression(EnumOps.MINUS, expr1); :} 
+	|MINUS expression:expr1 {: RESULT = new UnaryArithmeticExpression(EnumOps.MINUS, expr1); :}
+	|PLUS expression:expr1 {: RESULT = expr1; :}
+	|LPAR expression:expr1 RPAR {: RESULT = expr1; :}  
+ 	|VAR:v {: RESULT = new VariableExpression(v); :}
  	|NUMBERINT:n {: RESULT = new ConstantExpression(n); :}
-	|VAR:v {: RESULT = new VariableExpression(v); :}
+ 	|NUMBERFLOAT:n {: RESULT = new ConstantExpression(n); :}
 	|BOOL:b {: RESULT = new ConstantExpression(b); :}
+	|VAR:v array:a {: RESULT = new Array(v, a);:}
 	;
+
 
 block ::= 
 	LBRACKET subFlow:f RBRACKET {: RESULT = new BlockInstruction(f); :}
@@ -139,7 +137,10 @@ subFlow ::=
 	| {: Vector<Instruction> vectorInstr = new Vector<Instruction>(); RESULT = vectorInstr; :}
 	;
 
-
+array ::=
+	array:a LSQUAREBRACKET expression:e RSQUAREBRACKET {: a.add(e); RESULT = a; :}
+	| LSQUAREBRACKET expression:e RSQUAREBRACKET {: Vector<Expression> v = new Vector<Expression>(); v.add(e); RESULT = v;:}
+	;
 whileInstr ::=
 	WHILE LPAR expression:cond RPAR instruction:instr {: RESULT = new While(cond,instr); :}
 	;
@@ -149,8 +150,6 @@ ifInstr ::=
 	IF LPAR expression:cond RPAR instruction:instr {: RESULT = new If(cond, instr); :}
 	|IF LPAR expression:cond RPAR instruction:ifInstr ELSE instruction:elseInstr {: RESULT = new Else(cond, ifInstr, elseInstr); :}
 	;
-
-
 
 
 
