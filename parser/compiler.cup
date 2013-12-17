@@ -36,7 +36,6 @@ init with {:
 
 :};
 
-
 terminal LPAR, RPAR, LPARTAB, RPARTAB, PLUS, MINUS, MULT, DIV, MINUS_U, SEMIC, AND, OR, EQUAL, DIFF, INF, INFE, SUP, SUPE, AFFECT, TRUE, FALSE, TAB, INDTAB, MOD, NOT, COLON, LSQUAREBRACKET, RSQUAREBRACKET;
 terminal PROP, CHAINE;
 terminal EnumType TYPE;
@@ -80,7 +79,7 @@ start with flow;
 flow ::=
 	flow instruction:instr {: 	if(instr != null){
 									Label nextLabel = new Label();
-									instr.generateCode(nextLabel);//, stack);
+									instr.generateCode(nextLabel);
 									System.out.println(nextLabel.print() + ":"); 
 								} :}
 	|						{: stack.push(varTab); :}
@@ -99,10 +98,10 @@ declaration ::=
 	|TYPE:type VAR:var array SEMIC {: RESULT = null; varTab.put(var, type); :}
 	;
 assign ::=
-	TYPE:type VAR:var ASSIGN expression:expr SEMIC {: RESULT = new Assign(var, expr); varTab.put(var, type); :}
-	|VAR:var ASSIGN expression:expr SEMIC {: RESULT = new Assign(var, expr); :}
-	|TYPE:type VAR:var LSQUAREBRACKET expression:i RSQUAREBRACKET ASSIGN expression:expr SEMIC {: RESULT = new Assign(var, i, expr); varTab.put(var, type); :}
-	|VAR:var LSQUAREBRACKET expression:i RSQUAREBRACKET ASSIGN expression:expr SEMIC {: RESULT = new Assign(var, i, expr); :}
+	TYPE:type VAR:var ASSIGN expression:expr SEMIC {: varTab.put(var, type); RESULT = new Assign(var, expr); :}
+	|VAR:var ASSIGN expression:expr SEMIC {: VariableTableManager.verify(varTab, var); RESULT = new Assign(var, expr); :}
+	|TYPE:type VAR:var LSQUAREBRACKET expression:i RSQUAREBRACKET ASSIGN expression:expr SEMIC {: varTab.put(var, type); RESULT = new Assign(var, i, expr); :}
+	|VAR:var LSQUAREBRACKET expression:i RSQUAREBRACKET ASSIGN expression:expr SEMIC {: VariableTableManager.verify(varTab, var); RESULT = new Assign(var, i, expr); :}
 	;
 
 expression ::=
@@ -134,7 +133,7 @@ expression ::=
 
 
 block ::= 
-	LBRACKET subFlow:f RBRACKET {: RESULT = new BlockInstruction(f); :}
+	LBRACKET {: stack.push(stack.peek()); :} subFlow:f RBRACKET {: stack.pop(); RESULT = new BlockInstruction(f); :}
 	;
 
 subFlow ::=
@@ -155,114 +154,3 @@ ifInstr ::=
 	IF LPAR expression:cond RPAR instruction:instr {: RESULT = new If(cond, instr); :}
 	|IF LPAR expression:cond RPAR instruction:ifInstr ELSE instruction:elseInstr {: RESULT = new Else(cond, ifInstr, elseInstr); :}
 	;
-
-
-
-/*
-//start with statements; //normal mode
-//start with expr_num_test; //expr_num test
-start with expr_bool_test; //expr_bool test
-
-
-////////////////////////////TEST D'EXPR_NUM
-expr_num_test ::=
-        expr_num:e {: e.generateCode(); :}
-	;
-//////////////////////////////////////
-
-
-////////////////////////////TEST D'EXPR_NUM
-expr_bool_test ::=
-        expr_bool:e {: e.generateCode(); :}
-	;
-//////////////////////////////////////
-
-statements ::=
-	statements statement
-	|statement;
-
-statement ::=
-	expr_num:e SEMIC {: :}
-	|expr_bool:e SEMIC {: :}
-	|expr_complex:e SEMIC {: :}
-	|expr_num_decl SEMIC {: :}
-	|expr_bool_decl SEMIC {: :}			 
-	;
-
-expr_num_decl ::=
-	VAR:n INT {: :}
-	|VAR:n UINT {: :}
-	|VAR:n FLOAT {:  :}
-	|VAR:n1 INT AFFECT expr_num:n2 {: :}
-	|VAR:n1 UINT AFFECT expr_num:n2 {: :}
-	|VAR:n1 FLOAT AFFECT expr_num:n2 {: :}	
-	|VAR:n1 AFFECT expr_num:n2 {: :}
-	;
-
-expr_bool_decl ::=
-	VAR:p BOOL {: :}
-	|VAR:p1 BOOL AFFECT expr_bool:p2 {: :}
-	|VAR:p1 AFFECT expr_bool:p2 {: :}
-	;
-
-
-
-
-expr_num ::=
-	expr_num:n1 PLUS expr_num:n2 {: RESULT = new BinaryArithmeticOperation(n1, EnumOps.PLUS, n2); :}
-	|expr_num:n1 MINUS expr_num:n2 {: :}
-	|expr_num:n1 TIMES expr_num:n2 {: :}
-	|expr_num:n1 DIVIDE expr_num:n2 {: :}
-    |LPAR:lpar expr_num:e RPAR:rpar {: :}
-	|NUMBER:n {: RESULT = new Nombre(n); :}
-	|VAR:n1 {: RESULT = new Variable(n1); :}
-	|var_tableau:n {: :}
-	;    
-
-expr_bool ::=
-	expr_bool:p1 AND expr_bool:p2 {: :}
-	|expr_bool:p1 OR expr_bool:p2 {:  :}
-	//|expr_num:n1 EQUAL expr_num:n2 {:  :}
-	//|expr_num:n1 DIFF expr_num:n2 {:  :}
-	|expr_bool:p1 EQUAL expr_bool:p2 {:  :}
-	|expr_bool:p1 DIFF expr_bool:p2 {:  :}
-	//|expr_num:n1 SUP expr_num:n2 {:  :}
-	//|expr_num:n1 INF expr_num:n2 {:  :}
-	//|expr_num:n1 SUPE expr_num:n2 {:  :}
-	//|expr_num:n1 INFE expr_num:n2 {:  :}
-	|BOOL:p {: System.out.println(p); :} 
-	//|expr_num {: :}
-	//|VAR:p {: :}
-	//|var_tableau:p {: :}
-	;
-
-
-dim_tableau ::=                            
-	dim_tableau:t1 indtab:t2 {: :}
-	|indtab:t {: :}
-	;
-
-indtab ::=                                 // INDTAB = "[i]" dans "tab[i]" 
-	LPARTAB NUMBER:i RPARTAB {: :}
-	|LPARTAB VAR:i RPARTAB {: :}
-	;
-
-var_tableau ::=
-	VAR dim_tableau:t {: :}
-	;
-
-expr_complex_decl ::= 
-	VAR:c1 INT dim_tableau {:  :}
-	|VAR:c1 UINT dim_tableau {:  :}
-	|VAR:c1 FLOAT dim_tableau {:  :}
-	|VAR:c1 BOOL dim_tableau {:  :}
-	|VAR:c1 TAB dim_tableau {:  :}
-	|VAR:c1 INDTAB:c2 AFFECT expr_num:c3 {: :}
-	|VAR:c1 INDTAB:c2 AFFECT expr_bool:c3 {: :}
-	|VAR:c1 INDTAB:c2 AFFECT VAR:c3 {: :}   // On suppose que l'on peut ainsi déclarer des tableaux de tableaux
-	|VAR:c1 AFFECT CHAINE:c2 {: :}
-	;
-	
-	*/
-
-

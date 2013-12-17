@@ -1,2 +1,85 @@
+//Input2.txt
+//Declaration de variable, affectations, puis affectation pendant la declaration.
+short a1 = 2; a1 = 1;
+short a2 = 11;
+
+unsigned short b1; b1 = 2;
+unsigned short b2 = 22;
+
+int c1; c1 = 3;
+int c2 = 33;
+
+unsigned int d1; d1 = 4;
+unsigned int d2 = 44;
+
+float e1; e1 = 5;
+float e2 = 55;
+
+char f1; f1 = 'a';
+char f2 = '1';
+
+string g1; g1 = "Test d'un premier string.";
+string g2 = "Test d'un second string.";
+
 int tab[5];
 tab[1] = 2;
+
+bool h1; h1 = true;
+bool h2 = false;
+
+//Test d'une longue affectation utilisant beaucoup d'opérations pas trés bien aérés
+/* Ca permet aussi de vérifier que les priorités sont bien réspectées */
+int test= 1+2+(3)+    ((((5))))+6+ 8+ 9+4% 2/ 3 *    5          +((2+0));
+
+/* ----------------
+
+Test des boucles et des différents opérateurs
+
+-----------------*/
+
+if(h1){
+	int i1 = 2;
+	short i2 = 3;
+}
+
+float compteur = 3.5;
+if(1+2+3 >= 5%2*6+3){
+	compteur = compteur+ 1;
+} else {
+	compteur=compteur- 1;
+}
+
+int cpt=0;
+while(cpt<e2){
+	cpt = cpt +1;
+	int x = 2+3*5+2;
+} cpt = 0;
+
+
+if(h1 && !h2){}
+
+
+while(h1 && h2){
+	int x = 1;
+}
+
+
+while(1+3+2){
+	int z = 2;
+	z = z + 2;
+}
+
+
+//boucle imbriquee
+if(6>2){
+	if(5>2){
+		int x1 = 1;
+		int x2 = 1;
+	}
+}
+
+//test de la verification de la presence d'une variable dans l'environnement
+if(6<2){
+	xyz = 1;
+	yxz[1] = 1;
+}
