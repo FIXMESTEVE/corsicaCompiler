@@ -43,6 +43,8 @@ terminal EnumType TYPE;
 terminal String VAR;
 terminal Integer NUMBERINT;
 terminal Float NUMBERFLOAT;
+terminal String CHARACTER;
+terminal String STRING;
 terminal INT, UINT, FLOAT, BOOL, CHAR;
 terminal ASSIGN;
 terminal IF, WHILE;
@@ -68,7 +70,7 @@ precedence left AND;
 precedence left EQUAL, DIFF;
 precedence left INF, SUP, INFE, SUPE;
 precedence left PLUS, MINUS;
-precedence left MULT, DIV;
+precedence left MULT, DIV, MOD;
 precedence left MINUS_U;
 
 precedence right ELSE;
@@ -112,6 +114,7 @@ expression ::=
 	|expression:expr1 SUPE expression:expr2 {: RESULT = new Comparison(expr1, EnumOps.GE, expr2); :}
 	|expression:expr1 PLUS expression:expr2 {: RESULT = new BinaryArithmeticOperation(expr1, EnumOps.PLUS, expr2); :}
 	|expression:expr1 MINUS expression:expr2 {: RESULT = new BinaryArithmeticOperation(expr1, EnumOps.MINUS, expr2); :}
+	|expression:expr1 MOD expression:expr2 {: RESULT = new BinaryArithmeticOperation(expr1, EnumOps.MOD, expr2); :}
 	|expression:expr1 MULT expression:expr2 {: RESULT = new BinaryArithmeticOperation(expr1, EnumOps.MULT, expr2); :}
 	|expression:expr1 DIV expression:expr2 {: RESULT = new BinaryArithmeticOperation(expr1, EnumOps.DIV, expr2); :}
 	|expression:expr1 AND expression:expr2 {: RESULT = new And(expr1, expr2); :}
@@ -125,6 +128,8 @@ expression ::=
  	|NUMBERFLOAT:n {: RESULT = new ConstantExpression(n); :}
 	|BOOL:b {: RESULT = new ConstantExpression(b); :}
 	|VAR:v array:a {: RESULT = new Array(v, a);:}
+	|CHARACTER:c {: RESULT = new ConstantExpression(c); :}
+	|STRING:s {: RESULT = new ConstantExpression(s); :}
 	;
 
 

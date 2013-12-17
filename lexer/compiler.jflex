@@ -1,5 +1,4 @@
 import java_cup.runtime.Symbol;
-
 %%
 %class CompilerLexer
 %line
@@ -15,11 +14,15 @@ Comment2  = "//" [^\n\r]* [\n|\r|\r\n]
 
 NumberFloat = [[:digit:]]+(\.[[:digit:]]+)?([Ee][+-]?[[:digit:]]+)?
 NumberInteger = [[:digit:]]+
-VAR = [a-zA-Z]+[1-9]*
+//Var = [a-zA-Z]+[1-9]*
+Var = [_a-zA-Z][_a-zA-Z0-9]*
+String = \".*\"
+Char = '[a-zA-Z1-9]'
 
 %%
 
 //types
+/* ---- les pointeurs ne sont pas encore pris en charge ----
 "int*" {return new Symbol(CompilerSymbol.TYPE, yyline, yycolumn, EnumType.PTR_INTEGER);}
 "unsigned int*" {return new Symbol(CompilerSymbol.TYPE, yyline, yycolumn, EnumType.PTR_UNSIGNED_INT);}
 "float*" {return new Symbol(CompilerSymbol.TYPE, yyline, yycolumn, EnumType.PTR_FLOAT);}
@@ -28,6 +31,7 @@ VAR = [a-zA-Z]+[1-9]*
 "string*" {return new Symbol(CompilerSymbol.TYPE, yyline, yycolumn, EnumType.PTR_STRING);}
 "short*" {return new Symbol(CompilerSymbol.TYPE, yyline, yycolumn, EnumType.PTR_SHORT);}
 "unsigned short*" {return new Symbol(CompilerSymbol.TYPE, yyline, yycolumn, EnumType.PTR_UNSIGNED_SHORT);}
+---- */
 
 "short" {return new Symbol(CompilerSymbol.TYPE, yyline, yycolumn, EnumType.SHORT);}
 "unsigned short" {return new Symbol(CompilerSymbol.TYPE, yyline, yycolumn, EnumType.UNSIGNED_SHORT);}
@@ -55,8 +59,8 @@ VAR = [a-zA-Z]+[1-9]*
 "<="    { return new Symbol(CompilerSymbol.INFE, yyline, yycolumn); }
 ">"     { return new Symbol(CompilerSymbol.SUP, yyline, yycolumn); }
 ">="    { return new Symbol(CompilerSymbol.SUPE, yyline, yycolumn); }
-"&"     { return new Symbol(CompilerSymbol.AND, yyline, yycolumn); }
-"|"     { return new Symbol(CompilerSymbol.OR, yyline, yycolumn); }
+"&&"     { return new Symbol(CompilerSymbol.AND, yyline, yycolumn); }
+"||"     { return new Symbol(CompilerSymbol.OR, yyline, yycolumn); }
 "!"     { return new Symbol(CompilerSymbol.NOT, yyline, yycolumn); }
 ";"   { return new Symbol(CompilerSymbol.SEMIC, yyline, yycolumn); }
 "=" { return new Symbol(CompilerSymbol.ASSIGN, yyline, yycolumn); }
@@ -70,10 +74,12 @@ VAR = [a-zA-Z]+[1-9]*
 "]" { return new Symbol(CompilerSymbol.RSQUAREBRACKET, yyline, yycolumn);}
 //","     {return new Symbol(CompilerSymbol.COMA, yyline, yycolumn);}
 
-//variables and numbers
-{VAR} {return new Symbol(CompilerSymbol.VAR, yyline, yycolumn, new String(yytext()));}
+//variables, nombres, char, string...
+{Var} {return new Symbol(CompilerSymbol.VAR, yyline, yycolumn, new String(yytext()));}
 {NumberInteger}     { return new Symbol(CompilerSymbol.NUMBERINT, yyline, yycolumn, new Integer(yytext())); }
 {NumberFloat}     { return new Symbol(CompilerSymbol.NUMBERFLOAT, yyline, yycolumn, new Float(yytext())); }
+{Char}     { return new Symbol(CompilerSymbol.CHARACTER, yyline, yycolumn, new String(yytext())); }
+{String}	{ return new Symbol(CompilerSymbol.STRING, yyline, yycolumn, new String(yytext())); }
 /* -------------------------------------------------
         Commentaires - Caracteres non pris en compte
    ------------------------------------------------- */
