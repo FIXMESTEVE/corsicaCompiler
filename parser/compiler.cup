@@ -122,11 +122,11 @@ expression ::=
 	|MINUS expression:expr1 {: RESULT = new UnaryArithmeticExpression(EnumOps.MINUS, expr1); :}
 	|PLUS expression:expr1 {: RESULT = expr1; :}
 	|LPAR expression:expr1 RPAR {: RESULT = expr1; :}  
- 	|VAR:v {: RESULT = new VariableExpression(v); :}
+ 	|VAR:v {: VariableTableManager.verify(varTab, v); RESULT = new VariableExpression(v); :}
  	|NUMBERINT:n {: RESULT = new ConstantExpression(n); :}
  	|NUMBERFLOAT:n {: RESULT = new ConstantExpression(n); :}
 	|BOOL:b {: RESULT = new ConstantExpression(b); :}
-	|VAR:v array:a {: RESULT = new Array(v, a);:}
+	|VAR:v array:a {: VariableTableManager.verify(varTab, v); RESULT = new Array(v, a);:}
 	|CHARACTER:c {: RESULT = new ConstantExpression(c); :}
 	|STRING:s {: RESULT = new ConstantExpression(s); :}
 	;

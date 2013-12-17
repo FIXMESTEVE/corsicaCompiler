@@ -80,6 +80,7 @@ if(6>2){
 
 //test de la verification de la presence d'une variable dans l'environnement
 if(6<2){
-	xyz = 1;
+	xyz = 1 + wzdzda;
 	yxz[1] = 1;
 }
+
