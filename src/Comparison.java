@@ -5,8 +5,8 @@ public class Comparison extends BooleanExpression{
 	
 	public Comparison(Expression l, EnumOps op, Expression r){
 		leftExpr = l;
-		rightExpr = l;
-		op = operator;
+		rightExpr = r;
+		operator = op;
 	}
 
 	public void generateJump(Label yes, Label no){
