@@ -11,6 +11,7 @@ import java_cup.runtime.Symbol;
         Commentaires
    ------------------------------------------------- */
 Comment   = "/*" [^*] ~"*/" | "/*" "*"+ "/"
+Comment2  = "//" [^\n\r]* [\n|\r|\r\n]
 
 NumberFloat = [[:digit:]]+(\.[[:digit:]]+)?([Ee][+-]?[[:digit:]]+)?
 NumberInteger = [[:digit:]]+
@@ -46,7 +47,7 @@ VAR = [a-zA-Z]+[1-9]*
 "("     { return new Symbol(CompilerSymbol.LPAR, yyline, yycolumn); }
 ")"     { return new Symbol(CompilerSymbol.RPAR, yyline, yycolumn); }
 "true"  { return new Symbol(CompilerSymbol.BOOL, yyline, yycolumn, yytext()); }
-"false"  { return new Symbol(CompilerSymbol.BOOL, yyline, yycolumn, yytext()); }
+"false" { return new Symbol(CompilerSymbol.BOOL, yyline, yycolumn, yytext()); }
 "%"     { return new Symbol(CompilerSymbol.MOD, yyline, yycolumn); }
 "=="    { return new Symbol(CompilerSymbol.EQUAL, yyline, yycolumn); }
 "!="    { return new Symbol(CompilerSymbol.DIFF, yyline, yycolumn); }
@@ -77,7 +78,7 @@ VAR = [a-zA-Z]+[1-9]*
         Commentaires - Caracteres non pris en compte
    ------------------------------------------------- */
 {Comment} {}
-
+{Comment2} {}
 /* -------------------------------------------------
    ------------------------------------------------- */
 .|\n {}
